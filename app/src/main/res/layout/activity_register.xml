@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/head" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+
+        android:padding="15dp"
+        tools:context="com.example.administrator.used_carvalues.MainActivity">
+
+
+        <LinearLayout
+            android:layout_marginTop="100dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_shape_ll"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/icon_tel" />
+
+            <EditText
+                android:id="@+id/et_tel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:background="@null"
+                android:digits="0123456789"
+                android:hint="用户名"
+                android:inputType="number"
+
+                android:singleLine="true"
+                android:textColor="#555"
+                android:textColorHint="#777"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_shape_ll"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/icon_pw" />
+
+            <EditText
+                android:id="@+id/et_pw"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:background="@null"
+                android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:hint="输入密码"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:textColor="#555"
+                android:textColorHint="#777"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_shape_ll"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/icon_pw" />
+
+            <EditText
+                android:id="@+id/et_pw_again"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:background="@null"
+                android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:hint="再次输入密码"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:textColor="#555"
+                android:textColorHint="#777"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="31dp"
+            android:background="@drawable/bg_shape"
+            android:text="注册"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+
+
+    </LinearLayout>
+</LinearLayout>

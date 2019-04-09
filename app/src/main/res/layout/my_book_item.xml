@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:layout_marginTop="-4dp"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="-3dp"
+        android:focusable="false"
+        android:layout_marginStart="-3dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        card_view:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/book" />
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:paddingEnd="2dp"
+                        android:paddingStart="4dp"
+                        android:paddingTop="6dp"
+                        android:textColor="@color/grey_800"
+                        android:textSize="18sp"
+                        tools:text="教程" />
+
+                    <TextView
+                        android:id="@+id/address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:paddingStart="4dp"
+                        android:textColor="#999999"
+                        android:textSize="13sp"
+                        tools:text="教程" />
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="90dp"
+                        android:lineSpacingMultiplier="1.2"
+                        android:paddingBottom="8dp"
+                        android:paddingEnd="2dp"
+                        android:paddingStart="32dp"
+                        android:text="借书时间："
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/borrowtime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:lineSpacingMultiplier="1.2"
+                        android:textSize="15sp"
+                        tools:text="1987.06" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="90dp"
+                        android:lineSpacingMultiplier="1.2"
+                        android:paddingBottom="8dp"
+                        android:paddingEnd="2dp"
+                        android:paddingStart="32dp"
+                        android:text="应还时间："
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/backtime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:lineSpacingMultiplier="1.2"
+                        android:paddingBottom="4dp"
+                        android:textSize="15sp"
+                        tools:text="1987.06" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="90dp"
+                        android:lineSpacingMultiplier="1.2"
+                        android:paddingBottom="8dp"
+                        android:paddingEnd="2dp"
+                        android:paddingStart="32dp"
+                        android:text="续借次数："
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="10dp"
+                        android:lineSpacingMultiplier="1.2"
+                        android:paddingBottom="8dp"
+                        android:paddingStart="32dp"
+                        android:textSize="15sp"
+                        tools:text="6" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="90dp"
+                        android:lineSpacingMultiplier="1.2"
+                        android:paddingBottom="8dp"
+                        android:paddingEnd="2dp"
+                        android:paddingStart="32dp"
+                        android:text="剩余天数："
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/day"
+                        android:layout_width="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingMultiplier="1.2"
+                        android:paddingBottom="8dp"
+                        android:layout_marginRight="10dp"
+                        android:paddingStart="32dp"
+                        android:textColor="@color/red"
+                        android:textSize="18sp"
+                        tools:text="123" />
+
+                </FrameLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/xujie"
+            android:background="@color/colorPrimary"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:paddingStart="4dp"
+            android:gravity="center"
+            android:textColor="#fff"
+            android:layout_marginLeft="20dp"
+            android:focusable="true"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="bottom"
+            android:textSize="13sp"
+            android:text="续借" />
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

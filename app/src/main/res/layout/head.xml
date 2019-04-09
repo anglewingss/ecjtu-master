@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:id="@+id/app_bar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff"
+    android:orientation="vertical"
+    app:elevation="2dp">
+
+    <RelativeLayout
+        android:id="@+id/head"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#fefefe">
+
+        <ImageButton
+            android:id="@+id/head_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:onClick="onBack"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:src="@drawable/comment_back_normal" />
+
+        <TextView
+            android:id="@+id/head_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@color/text_title"
+            android:textSize="17sp"
+            tool:text="标题" />
+
+        <TextView
+            android:id="@+id/image_sure_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="确定"
+            android:textColor="@color/text_title"
+            android:textSize="15sp"
+            android:visibility="gone" />
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#d2d2d2" />
+</LinearLayout>

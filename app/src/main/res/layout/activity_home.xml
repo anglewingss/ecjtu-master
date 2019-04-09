@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.HomeActivity">
+
+    <FrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="54dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="54dp"
+        android:background="@color/grey_200" />
+
+    <RadioGroup
+        android:id="@+id/nav_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/nav_news_radio_button"
+            style="@style/nav_button"
+            android:checked="true"
+            android:drawableTop="@drawable/nav_news_radio_button"
+            android:text="学校新闻" />
+
+        <RadioButton
+            android:id="@+id/nav_lib_radio_button"
+            style="@style/nav_button"
+            android:drawableTop="@drawable/nav_library_radio_button"
+            android:text="图书馆" />
+        <RadioButton
+            android:id="@+id/nav_course_radio_button"
+            style="@style/nav_button"
+            android:drawableTop="@drawable/nav_library_radio_button"
+            android:text="选课" />
+
+        <RadioButton
+            android:id="@+id/nav_discovery_radio_button"
+            style="@style/nav_button"
+            android:drawableTop="@drawable/nav_discovery_radio_button"
+            android:text="地图导航" />
+
+        <RadioButton
+            android:id="@+id/nav_more_radio_button"
+            style="@style/nav_button"
+            android:drawableTop="@drawable/nav_more_radio_button"
+            android:text="个人中心" />
+
+    </RadioGroup>
+
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/splash_relativeLayout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/splash_imageView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:background="@mipmap/splash" />-->
+
+    <!--</RelativeLayout>-->
+
+</RelativeLayout>

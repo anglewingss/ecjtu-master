@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+
+
+    <include layout="@layout/head" />
+    <ImageView
+        android:id="@+id/header"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/icon_head" />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:minWidth="200dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:text="昵称"
+            android:textColor="#333"
+            android:textSize="17sp" />
+
+        <EditText
+            android:singleLine="true"
+            android:id="@+id/name"
+            android:maxLength="16"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:hint="填写昵称"
+            android:minWidth="100dp" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:minWidth="200dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:text="学院"
+            android:textColor="#333"
+            android:textSize="17sp" />
+
+        <EditText
+            android:id="@+id/school"
+            android:singleLine="true"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:hint="填写学院"
+            android:maxLength="16"
+            android:layout_marginLeft="10dp"
+            android:minWidth="100dp" />
+
+    </FrameLayout>
+
+
+    <!--<Button-->
+        <!--android:id="@+id/save"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:text="保存"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:textSize="17sp"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:gravity="center"-->
+        <!--android:layout_height="wrap_content" />-->
+</LinearLayout>
