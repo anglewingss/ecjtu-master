@@ -14,6 +14,8 @@ import android.net.NetworkInfo;
  */
 public class NetWorkUtils {
 
+    public static final String url = "http://192.168.137.1:8080/ssm";
+
     private NetWorkUtils() {
 
         /* cannot be instantiated */

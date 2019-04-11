@@ -73,4 +73,10 @@
         android:layout_width="match_parent"
         android:layout_height="1dp" />
 
+    <Button
+        android:id="@+id/connect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="连接" />
+
 </LinearLayout>

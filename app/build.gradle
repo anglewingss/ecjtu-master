@@ -33,4 +33,5 @@ dependencies {
     compile 'com.youth.banner:banner:1.4.9'
     compile files('libs/BaiduLBS_Android.jar')
     implementation files('libs/SQLiteStudioRemote.jar')
+    compile 'com.squareup.okhttp3:okhttp:3.8.0'
 }
