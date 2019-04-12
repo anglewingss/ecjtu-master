@@ -79,4 +79,10 @@
         android:layout_height="wrap_content"
         android:text="连接" />
 
+    <Button
+        android:id="@+id/openWebPage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="打开网页" />
+
 </LinearLayout>

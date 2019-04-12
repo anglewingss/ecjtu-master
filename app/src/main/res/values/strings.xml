@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">华东交通大学</string>
+    <string name="app_name">齐鲁工业大学</string>
     <string name="discovery">我的课表</string>
     <string name="more">更  多</string>
     <string name="double_click_to_exit">再按一次退出</string>
@@ -7,7 +7,7 @@
     <string name="title_activity_books_detail">图书详情</string>
     <string name="title_activity_course">我的个人课表</string>
     <string name="title_activity_grade">我的成绩</string>
-    <string name="title_activity_life_info">海大生活</string>
+    <string name="title_activity_life_info">工大生活</string>
     <string name="share">share</string>
     <string name="title_activity_login_demo">Sign in</string>
     <!-- Strings related to login -->

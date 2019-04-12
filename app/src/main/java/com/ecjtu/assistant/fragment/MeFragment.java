@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.ecjtu.assistant.R;
 import com.ecjtu.assistant.activity.EditInfoActivity;
 import com.ecjtu.assistant.activity.LoginActivity;
+import com.ecjtu.assistant.activity.WebActivity;
 import com.ecjtu.assistant.app.MyApplication;
 import com.ecjtu.assistant.db.StudentDb;
 import com.ecjtu.assistant.utils.NetWorkUtils;
@@ -63,8 +64,6 @@ public class MeFragment extends Fragment {
         school = (TextView) view.findViewById(R.id.school);
         imageView = (ImageView) view.findViewById(R.id.headerimg);
 
-
-
         head_title.setText("个人中心");
 
 
@@ -88,6 +87,15 @@ public class MeFragment extends Fragment {
             }
         });
         view.findViewById(R.id.head_back).setVisibility(View.GONE);
+
+        Button openWebPage = (Button) view.findViewById(R.id.openWebPage);
+        openWebPage.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), WebActivity.class));
+                getActivity().finish();
+            }
+        });
 
         Button connect = (Button) view.findViewById(R.id.connect);
 
@@ -155,7 +163,6 @@ public class MeFragment extends Fragment {
                 e.printStackTrace();
             }
         }
-
         return sb.toString();
     }
 }

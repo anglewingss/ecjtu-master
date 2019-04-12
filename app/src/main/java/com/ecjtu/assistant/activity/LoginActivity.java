@@ -70,7 +70,6 @@ public class LoginActivity extends BaseActivity {
             showToast("请输入密码!");
             return;
         }
-
         String telStr = tel.getText().toString();
         String pwStr = pw.getText().toString();
         List<StudentDb.Record> query = recordDb.query();
@@ -89,14 +88,10 @@ public class LoginActivity extends BaseActivity {
                 finish();
             } else {
                 showToast("密码错误!");
-
             }
         } else {
             showToast("帐号不存在,请去注册!");
         }
-
     }
-
-
 }
 
