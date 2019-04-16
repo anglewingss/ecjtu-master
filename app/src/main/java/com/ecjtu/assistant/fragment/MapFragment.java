@@ -174,7 +174,7 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
                 PlanNode stNode = PlanNode.withCityNameAndPlaceName(localcity, start_edit.getText().toString());
                 PlanNode enNode = PlanNode.withCityNameAndPlaceName(localcity, end_edit.getText().toString());
                 mSearch.transitSearch((new TransitRoutePlanOption())
-                        .from(stNode).city("南昌").to(enNode));
+                        .from(stNode).city(localcity).to(enNode));
             }
         });
         Button search=(Button)view.findViewById(R.id.btn_search);
@@ -182,7 +182,7 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
             @Override
             public void onClick(View v) {
                 busSearch.searchInCity((new PoiCitySearchOption()).city(
-                        "南昌")
+                        localcity)
                         .keyword(query_edit.getText().toString()));
             }
         });
@@ -501,7 +501,7 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
     }
 
     public void MyToast(String s) {
-        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
     }
 
     /**
