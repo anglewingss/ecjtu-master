@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.ecjtu.assistant.R;
@@ -23,6 +25,8 @@ import com.ecjtu.assistant.activity.WebActivity;
 import com.ecjtu.assistant.app.MyApplication;
 import com.ecjtu.assistant.db.StudentDb;
 import com.ecjtu.assistant.utils.NetWorkUtils;
+import com.ecjtu.assistant.utils.ReptileUtils;
+import com.ecjtu.assistant.utils.ToastUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -123,7 +127,11 @@ public class MeFragment extends Fragment {
                             //获取服务器返回的输入流
                             InputStream is = conn.getInputStream();
                             String str = convertStreamToString(is);
+                            Looper.prepare();
+                            Toast.makeText(getActivity(), "Http"+str, Toast.LENGTH_SHORT).show();
+                            Looper.loop();
                             System.out.println("HttpUrlConnection方式"+str);
+
 
                         } catch (Exception e) {
                             System.out.println("utils异常");
@@ -136,6 +144,18 @@ public class MeFragment extends Fragment {
             }
         });
 
+        Button reptile = (Button)view.findViewById(R.id.reptile);
+        reptile.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ReptileUtils.getNewsList("38","list.htm");
+                    }
+                }).start();
+            }
+        });
         return view;
     }
 
@@ -165,4 +185,5 @@ public class MeFragment extends Fragment {
         }
         return sb.toString();
     }
+
 }

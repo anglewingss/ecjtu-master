@@ -1,6 +1,7 @@
 package com.ecjtu.assistant.utils;
 
 import android.content.Context;
+import android.os.Looper;
 import android.widget.Toast;
 
 /**
@@ -91,4 +92,11 @@ public class ToastUtils {
         }
     }
 
+    public static void showThreadShort(Context context,CharSequence charSequence){
+        if (isShow) {
+            Looper.prepare();
+            Toast.makeText(context, charSequence,Toast.LENGTH_SHORT).show();
+            Looper.loop();
+        }
+    }
 }

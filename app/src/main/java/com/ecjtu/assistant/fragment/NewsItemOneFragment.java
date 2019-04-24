@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +26,7 @@ import com.ecjtu.assistant.db.BannerDb;
 import com.ecjtu.assistant.db.DBManager;
 import com.ecjtu.assistant.db.RecordDb;
 import com.ecjtu.assistant.utils.GlideImageLoader;
+import com.ecjtu.assistant.utils.ReptileUtils;
 import com.ecjtu.assistant.utils.ScreenUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -34,7 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 综合要闻
+ * 工大要闻
  */
 public class NewsItemOneFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, OnBannerListener {
 
@@ -149,13 +152,15 @@ public class NewsItemOneFragment extends BaseFragment implements SwipeRefreshLay
                     position = position - 1;
                 }
                 startActivity(new Intent(context, LifeInfoActivity.class)
-                        .putExtra("readNumber", newsList.get(position).number)
+                        //.putExtra("readNumber", newsList.get(position).number)
                         .putExtra("newsLink", newsList.get(position).href));
-                int n=Integer.parseInt(newsList.get(position).number);
-                newsList.get(position).number=(n+1)+"";
+                //int n=Integer.parseInt(newsList.get(position).number);
+                //newsList.get(position).number=(n+1)+"";
                 newsRecyclerViewAdapter.notifyDataSetChanged();
             }
         });
+
+
         newsRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -196,30 +201,60 @@ public class NewsItemOneFragment extends BaseFragment implements SwipeRefreshLay
         newsRecyclerViewAdapter.setHeaderView(header);
     }
 
+    private String  number = "38";//url序号
+    private  String urlSuffix = "list" + currentPage + ".htm";
     private void initData() {
-        int pageNum=10;
-        boolean b=false;
-        for (int i = (currentPage-1)*pageNum; i < ((currentPage-1)*pageNum)+pageNum; i++) {
-            if (i<allNewsList.size()) {
-                newsRecyclerViewAdapter.addData(allNewsList.get(i));
-            }else {
-                b=true;
+        if(currentPage == 1){
+            //第一页没有1这个数字
+            urlSuffix = "list.htm";
+        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                newsList = ReptileUtils.getNewsList(number, urlSuffix);
+                Message msg = new Message();
+                msg.what = 1;
+                handler.sendMessage(msg);
+            }
+        }).start();
+        swipeRefreshLayout.setRefreshing(false);
+//        int pageNum=10;
+//        boolean b=false;
+//        for (int i = (currentPage-1)*pageNum; i < ((currentPage-1)*pageNum)+pageNum; i++) {
+//            if (i<allNewsList.size()) {
+//                newsRecyclerViewAdapter.addData(allNewsList.get(i));
+//            }else {
+//                b=true;
+//            }
+//        }
+//        if (b){
+//            Toast.makeText(context, "没有更多数据了~", Toast.LENGTH_SHORT).show();
+//            this.currentPage--;
+//        }
+
+    }
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1){
+                for (RecordDb.Record record : newsList) {
+                    newsRecyclerViewAdapter.addData(record);
+                }
             }
         }
+    };
 
-        if (b){
-            Toast.makeText(context, "没有更多数据了~", Toast.LENGTH_SHORT).show();
-            this.currentPage--;
-        }
-        swipeRefreshLayout.setRefreshing(false);
-    }
 
     @Override
     public void onRefresh() {
-        currentPage = 1;
-        newsRecyclerViewAdapter.removeDatas();
-        initData();
+
+        //currentPage = 1;
+        //newsRecyclerViewAdapter.removeDatas();
+        //initData();
         Toast.makeText(context, "已成功刷新新闻列表~", Toast.LENGTH_SHORT).show();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

@@ -43,9 +43,9 @@ public class NewsFragment extends BaseFragment {
         tabLayout = (TabLayout) newsView.findViewById(R.id.title_bar_TabLayout);
         viewPager = (ViewPager) newsView.findViewById(R.id.fragment_news_content_ViewPager);
 
-        list.add("校园要闻");
-        list.add("信息通告");
-        list.add("学生活动");
+        list.add("工大要闻");
+        list.add("通知公告");
+        list.add("媒体工大");
         list.add("校园风光");
 
         NewsTabLayoutAdapter newsTabLayoutAdapter = new NewsTabLayoutAdapter(getActivity().getSupportFragmentManager(), list);

@@ -14,7 +14,7 @@ import android.net.NetworkInfo;
  */
 public class NetWorkUtils {
 
-    public static final String url = "http://192.168.137.1:8080/ssm";
+    public static final String url = "http://192.168.43.41:8080/SchoolAassistant";
 
     private NetWorkUtils() {
 

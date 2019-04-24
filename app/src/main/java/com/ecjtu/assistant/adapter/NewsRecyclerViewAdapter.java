@@ -38,7 +38,7 @@ public class NewsRecyclerViewAdapter extends BaseRecycleViewAdapter< RecordDb.Re
         }
         ((HolderView) viewHolder).fragmentNewsItemTitleTextView.setText(data.title);
         ((HolderView) viewHolder).fragmentNewsItemDateTextView.setText(String.format("时间：%s", data.date));
-        ((HolderView) viewHolder).fragmentNewsItemReadCountTextView.setText(String.format("阅读：%s", data.number));
+        //((HolderView) viewHolder).fragmentNewsItemReadCountTextView.setText(String.format("阅读：%s", data.number));
 
         if (StringUtils.isFine(data.imgLink)) {
             ((HolderView) viewHolder).fragmentNewsItemImageView.setVisibility(View.VISIBLE);
@@ -69,7 +69,7 @@ public class NewsRecyclerViewAdapter extends BaseRecycleViewAdapter< RecordDb.Re
 
             fragmentNewsItemImageView = (ImageView) itemView.findViewById(R.id.fragment_news_item_imageView);
             fragmentNewsItemTitleTextView = (TextView) itemView.findViewById(R.id.fragment_news_item_title_textView);
-            fragmentNewsItemReadCountTextView = (TextView) itemView.findViewById(R.id.fragment_news_item_read_count_textView);
+            //fragmentNewsItemReadCountTextView = (TextView) itemView.findViewById(R.id.fragment_news_item_read_count_textView);
             fragmentNewsItemDateTextView = (TextView) itemView.findViewById(R.id.fragment_news_item_date_textView);
 
         }
