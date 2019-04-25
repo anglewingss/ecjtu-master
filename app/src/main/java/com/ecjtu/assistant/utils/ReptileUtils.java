@@ -1,7 +1,11 @@
 package com.ecjtu.assistant.utils;
 
 import com.ecjtu.assistant.db.RecordDb;
+import com.ecjtu.assistant.model.ScrollModel;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -22,16 +26,19 @@ public class ReptileUtils {
 
     private static final String rootUrl = "http://www.qlu.edu.cn";
     private static List<RecordDb.Record> recordList = new ArrayList<RecordDb.Record>();
+    private static List<ScrollModel> scrollModelList = new ArrayList<ScrollModel>();
 
     /**
      *
-     * @param number url连接序号
+     * @param
      * @param urlSuffix url后缀
      */
-    public static  List<RecordDb.Record> getNewsList(String number,String urlSuffix){
+    public static  List<RecordDb.Record> getNewsList(String urlSuffix){
+
+        recordList.clear();
         try {
             //String url = "http://www.qlu.edu.cn/38/list.htm";
-            String url = rootUrl + "/" + number + "/" + urlSuffix;
+            String url = rootUrl + "/"  + urlSuffix;
             // get请求获取页面信息
             String bb = doget(url);
             Document doc;
@@ -50,6 +57,39 @@ public class ReptileUtils {
             e.printStackTrace();
         }
         return recordList;
+    }
+
+
+    public static List<ScrollModel> getScrollModelList(){
+        scrollModelList.clear();
+        try {
+            //String url = "http://www.qlu.edu.cn/38/list.htm";
+            String url = rootUrl;
+            // get请求获取页面信息
+            String bb = doget(url);
+            Document doc;
+            //用jsoup接收页面信息
+            doc = Jsoup.parse(bb);
+
+            Elements news = doc.select("div[id=wp_news_w2]").select("script");
+            Element element = news.first();
+            String aString = element.data();
+            String bString = aString.substring(aString.indexOf("["), aString.indexOf(";"));
+
+            scrollModelList = new Gson().fromJson(bString,new TypeToken<List<ScrollModel>>(){}.getType());
+            scrollModelList.remove(scrollModelList.size()-1);
+            for (ScrollModel scrollModel : scrollModelList) {
+                //地址添加根目录
+                scrollModel.setSrc(rootUrl + scrollModel.getSrc());
+                //连接地址，如果没有根目录，则加上
+                if (!scrollModel.getUrl().startsWith("http")){
+                    scrollModel.setUrl(rootUrl + scrollModel.getUrl());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return scrollModelList;
     }
 
 

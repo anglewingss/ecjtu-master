@@ -25,6 +25,7 @@ import com.ecjtu.assistant.db.BannerDBManager;
 import com.ecjtu.assistant.db.BannerDb;
 import com.ecjtu.assistant.db.DBManager;
 import com.ecjtu.assistant.db.RecordDb;
+import com.ecjtu.assistant.model.ScrollModel;
 import com.ecjtu.assistant.utils.GlideImageLoader;
 import com.ecjtu.assistant.utils.ReptileUtils;
 import com.ecjtu.assistant.utils.ScreenUtils;
@@ -35,6 +36,7 @@ import com.youth.banner.listener.OnBannerListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * 工大要闻
@@ -77,13 +79,13 @@ public class NewsItemOneFragment extends BaseFragment implements SwipeRefreshLay
         sqLiteDatabase = dbManager.openDatabase(getActivity());
         allNewsList = dbManager.queryAll(sqLiteDatabase, null, null, null);
 
+        //BannerDBManager bannerDBManager = new BannerDBManager(getActivity());
+        //SQLiteDatabase sqLiteDatabase = bannerDBManager.openDatabase(getActivity());
+        //banerList = bannerDBManager.queryAll(sqLiteDatabase, null, null, null);
+        getBanerList();
 
 
-        BannerDBManager bannerDBManager = new BannerDBManager(getActivity());
-        SQLiteDatabase sqLiteDatabase = bannerDBManager.openDatabase(getActivity());
-        banerList = bannerDBManager.queryAll(sqLiteDatabase, null, null, null);
-
-        setDataForView() ;
+        //setDataForView();
         initData();
         return contentView;
     }
@@ -201,17 +203,17 @@ public class NewsItemOneFragment extends BaseFragment implements SwipeRefreshLay
         newsRecyclerViewAdapter.setHeaderView(header);
     }
 
-    private String  number = "38";//url序号
-    private  String urlSuffix = "list" + currentPage + ".htm";
+    private String urlSuffix = "";
     private void initData() {
+        urlSuffix = "38/list" + currentPage + ".htm";
         if(currentPage == 1){
             //第一页没有1这个数字
-            urlSuffix = "list.htm";
+            urlSuffix = "38/list.htm";
         }
         new Thread(new Runnable() {
             @Override
             public void run() {
-                newsList = ReptileUtils.getNewsList(number, urlSuffix);
+                newsList = ReptileUtils.getNewsList(urlSuffix);
                 Message msg = new Message();
                 msg.what = 1;
                 handler.sendMessage(msg);
@@ -234,6 +236,33 @@ public class NewsItemOneFragment extends BaseFragment implements SwipeRefreshLay
 
     }
 
+    private List<ScrollModel> scrollModelList = new ArrayList<ScrollModel>();
+    private void getBanerList(){
+        banerList.clear();
+        scrollModelList.clear();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                scrollModelList = ReptileUtils.getScrollModelList();
+                Message msg = new Message();
+                msg.what = 2;
+                handler.sendMessage(msg);
+            }
+        }).start();
+    }
+
+    private void convertToBanerList(){
+
+        for (ScrollModel scrollModel : scrollModelList) {
+            BannerDb.Record banner = new BannerDb.Record();
+            banner.title = scrollModel.getTitle();
+            banner.imgLink = scrollModel.getSrc();
+            banner.href = scrollModel.getUrl();
+            banerList.add(banner);
+        }
+    }
+
+
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -242,6 +271,10 @@ public class NewsItemOneFragment extends BaseFragment implements SwipeRefreshLay
                 for (RecordDb.Record record : newsList) {
                     newsRecyclerViewAdapter.addData(record);
                 }
+            }
+            if (msg.what == 2){
+                convertToBanerList();
+                setDataForView();
             }
         }
     };
