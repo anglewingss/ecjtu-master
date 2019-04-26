@@ -213,6 +213,9 @@ public class NewsItemOneFragment extends BaseFragment implements SwipeRefreshLay
         new Thread(new Runnable() {
             @Override
             public void run() {
+                //清空newslist
+                newsList.clear();
+
                 newsList = ReptileUtils.getNewsList(urlSuffix);
                 Message msg = new Message();
                 msg.what = 1;
@@ -268,8 +271,12 @@ public class NewsItemOneFragment extends BaseFragment implements SwipeRefreshLay
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == 1){
-                for (RecordDb.Record record : newsList) {
-                    newsRecyclerViewAdapter.addData(record);
+//                for (RecordDb.Record record : newsList) {//这个方法 加载第二页时程序闪退
+//                    newsRecyclerViewAdapter.addData(record);
+//                }
+                //newsRecyclerViewAdapter.addDatas(newsList);
+                for(int i = 0;i<newsList.size();i++){ //这个方法加载第二页时无响应
+                    newsRecyclerViewAdapter.addData(newsList.get(i));
                 }
             }
             if (msg.what == 2){
