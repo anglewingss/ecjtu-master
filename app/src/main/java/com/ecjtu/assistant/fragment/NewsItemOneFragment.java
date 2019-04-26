@@ -75,9 +75,9 @@ public class NewsItemOneFragment extends BaseFragment implements SwipeRefreshLay
         context = getActivity();
         initView();
 
-        dbManager = new DBManager(getActivity());
-        sqLiteDatabase = dbManager.openDatabase(getActivity());
-        allNewsList = dbManager.queryAll(sqLiteDatabase, null, null, null);
+//        dbManager = new DBManager(getActivity());
+//        sqLiteDatabase = dbManager.openDatabase(getActivity());
+//        allNewsList = dbManager.queryAll(sqLiteDatabase, null, null, null);
 
         //BannerDBManager bannerDBManager = new BannerDBManager(getActivity());
         //SQLiteDatabase sqLiteDatabase = bannerDBManager.openDatabase(getActivity());
@@ -97,7 +97,7 @@ public class NewsItemOneFragment extends BaseFragment implements SwipeRefreshLay
         recordDb.open(getActivity());
         bannerDb = BannerDb.getInstance();
         bannerDb.open(getActivity());
-             swipeRefreshLayout = (SwipeRefreshLayout) contentView.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout = (SwipeRefreshLayout) contentView.findViewById(R.id.swipe_refresh_layout);
 
         newsRecyclerView = (RecyclerView) contentView.findViewById(R.id.fragment_news_recyclerView);
         newsRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
@@ -146,7 +146,7 @@ public class NewsItemOneFragment extends BaseFragment implements SwipeRefreshLay
 
     private void setDataForView( ) {
 
-        newsRecyclerViewAdapter.addDatas(newsList);
+        //newsRecyclerViewAdapter.addDatas(newsList);
         newsRecyclerViewAdapter.setItemClickListener(new BaseRecycleViewHolderView.MyItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
