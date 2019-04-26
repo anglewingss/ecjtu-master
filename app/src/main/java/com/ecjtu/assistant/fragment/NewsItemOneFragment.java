@@ -155,7 +155,8 @@ public class NewsItemOneFragment extends BaseFragment implements SwipeRefreshLay
                 }
                 startActivity(new Intent(context, LifeInfoActivity.class)
                         //.putExtra("readNumber", newsList.get(position).number)
-                        .putExtra("newsLink", newsList.get(position).href));
+                       // .putExtra("newsLink", newsList.get(position).href));
+                        .putExtra("newsLink", newsRecyclerViewAdapter.getDatas().get(position).href));
                 //int n=Integer.parseInt(newsList.get(position).number);
                 //newsList.get(position).number=(n+1)+"";
                 newsRecyclerViewAdapter.notifyDataSetChanged();
