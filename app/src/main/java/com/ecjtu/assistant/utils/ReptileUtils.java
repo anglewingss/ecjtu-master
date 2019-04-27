@@ -53,6 +53,7 @@ public class ReptileUtils {
                 record.href = rootUrl + result.select("a").attr("href");
                 record.title = result.select("a").attr("title");
                 record.date = result.select("[class=news_meta]").text();
+                record.imgLink = getListImgLInk(record.href);
                 recordList.add(record);
             }
         } catch (Exception e) {
@@ -118,6 +119,26 @@ public class ReptileUtils {
         }
         return  sceneList;
     }
+
+    private String getListImgLInk(String infoLink){
+
+        String bb = doget(infoLink);
+        Document doc = Jsoup.parse(bb);
+        Elements elements = doc.select("div[class=article]");
+
+        Element element = elements.select("img").first();
+
+        String imglink = "";
+        if ((null != element && element.attr("src").contains("images/icon")) || null == element){
+            imglink = "";
+        }
+        else{
+            imglink = rootUrl + element.attr("src");
+        }
+
+        return imglink;
+    }
+
 
     private  String doget(String path) {
         InputStream is = null;
