@@ -1,5 +1,6 @@
 package com.ecjtu.assistant.utils;
 
+import com.ecjtu.assistant.db.BannerDb;
 import com.ecjtu.assistant.db.RecordDb;
 import com.ecjtu.assistant.model.ScrollModel;
 import com.google.gson.Gson;
@@ -26,10 +27,11 @@ public class ReptileUtils {
 
     private final String rootUrl = "http://www.qlu.edu.cn";
     private List<RecordDb.Record> recordList = new ArrayList<RecordDb.Record>();
+    private List<BannerDb.Record> sceneList = new ArrayList<BannerDb.Record>();
     private List<ScrollModel> scrollModelList = new ArrayList<ScrollModel>();
 
     /**
-     *
+     * 获得新闻列表
      * @param
      * @param urlSuffix url后缀
      */
@@ -60,6 +62,10 @@ public class ReptileUtils {
     }
 
 
+    /**
+     * 获得滚动列表
+     * @return
+     */
     public  List<ScrollModel> getScrollModelList(){
         scrollModelList.clear();
         try {
@@ -92,6 +98,26 @@ public class ReptileUtils {
         return scrollModelList;
     }
 
+    /**
+     * 第四个页面的图片
+     * @param urlSuffix 连接后缀名
+     * @return 返回列表
+     */
+    public List<BannerDb.Record> getSceneList(String urlSuffix){
+        sceneList.clear();
+        String url = rootUrl + "/" + urlSuffix;
+        String bb = doget(url);
+        Document doc = Jsoup.parse(bb);
+        Elements news = doc.select("table[class=wp_article_list_table]")
+                .select("div[class=albumn_info]").select("span[class=Article_MicroImage]");
+        for (Element element : news) {
+            BannerDb.Record record = new BannerDb.Record();
+            record.title = element.select("a").attr("title");
+            record.imgLink = rootUrl + element.select("img").attr("src");
+            sceneList.add(record);
+        }
+        return  sceneList;
+    }
 
     private  String doget(String path) {
         InputStream is = null;

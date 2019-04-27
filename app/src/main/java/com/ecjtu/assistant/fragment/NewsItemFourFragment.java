@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +27,7 @@ import com.ecjtu.assistant.db.BannerDb;
 import com.ecjtu.assistant.db.DBManager;
 import com.ecjtu.assistant.db.RecordDb;
 import com.ecjtu.assistant.utils.GlideImageLoader;
+import com.ecjtu.assistant.utils.ReptileUtils;
 import com.ecjtu.assistant.utils.ScreenUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -71,14 +74,13 @@ public class NewsItemFourFragment extends BaseFragment implements SwipeRefreshLa
         context = getActivity();
         initView();
 
-        bannerDBManager = new BannerDBManager(getActivity());
-        sqLiteDatabase = bannerDBManager.openDatabase(getActivity());
-        allPhotosList = bannerDBManager.queryphoto(sqLiteDatabase, null, null, null);
+//        bannerDBManager = new BannerDBManager(getActivity());
+//        sqLiteDatabase = bannerDBManager.openDatabase(getActivity());
+//        allPhotosList = bannerDBManager.queryphoto(sqLiteDatabase, null, null, null);
 
+        setDataForView();
 
-        setDataForView( ) ;
-
-        //initData();
+        initData();
         return contentView;
     }
 
@@ -135,7 +137,7 @@ public class NewsItemFourFragment extends BaseFragment implements SwipeRefreshLa
 
     private void setDataForView( ) {
 
-        newsRecyclerViewAdapter.addDatas(allPhotosList);
+        //newsRecyclerViewAdapter.addDatas(allPhotosList);
         newsRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -156,33 +158,58 @@ public class NewsItemFourFragment extends BaseFragment implements SwipeRefreshLa
         });
 
     }
-
+    private String urlSuffix = "";
     private void initData() {
-        int pageNum=3;
-        boolean b=false;
-        for (int i = (currentPage-1)*pageNum; i < ((currentPage-1)*pageNum)+pageNum; i++) {
-            if (i<allPhotosList.size()&&i>0) {
-                newsRecyclerViewAdapter.addData(allPhotosList.get(i));
-            }else {
-                b=true;
+        urlSuffix = "5174/list.htm";
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                photosList.clear();
+                photosList = new ReptileUtils().getSceneList(urlSuffix);
+                Message msg = new Message();
+                msg.what = 1;
+                handler.sendMessage(msg);
+            }
+        }).start();
+        swipeRefreshLayout.setRefreshing(false);
+//        int pageNum=3;
+//        boolean b=false;
+//        for (int i = (currentPage-1)*pageNum; i < ((currentPage-1)*pageNum)+pageNum; i++) {
+//            if (i<allPhotosList.size()&&i>0) {
+//                newsRecyclerViewAdapter.addData(allPhotosList.get(i));
+//            }else {
+//                b=true;
+//            }
+//        }
+//
+//        if (b){
+//            //Toast.makeText(context, "没有更多数据了~", Toast.LENGTH_SHORT).show();
+//            this.currentPage--;
+//        }
+    }
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1) {
+                for (int i = 0;i < photosList.size(); i++){
+                    newsRecyclerViewAdapter.addData(photosList.get(i));
+                }
             }
         }
-
-        if (b){
-            //Toast.makeText(context, "没有更多数据了~", Toast.LENGTH_SHORT).show();
-            this.currentPage--;
-        }
-        swipeRefreshLayout.setRefreshing(false);
-    }
+    };
 
     @Override
     public void onRefresh() {
-        currentPage = 1;
-        newsRecyclerViewAdapter.removeDatas();
-        allPhotosList = bannerDBManager.queryphoto(sqLiteDatabase, null, null, null);
-        newsRecyclerViewAdapter.addDatas(allPhotosList);
-        swipeRefreshLayout.setRefreshing(false);
+//        currentPage = 1;
+//        newsRecyclerViewAdapter.removeDatas();
+//        allPhotosList = bannerDBManager.queryphoto(sqLiteDatabase, null, null, null);
+//        newsRecyclerViewAdapter.addDatas(allPhotosList);
+//        swipeRefreshLayout.setRefreshing(false);
         Toast.makeText(context, "已成功刷新新闻列表~", Toast.LENGTH_SHORT).show();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
 }
