@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,7 +25,9 @@ import com.ecjtu.assistant.db.BannerDBManager;
 import com.ecjtu.assistant.db.BannerDb;
 import com.ecjtu.assistant.db.DBManager;
 import com.ecjtu.assistant.db.RecordDb;
+import com.ecjtu.assistant.model.ScrollModel;
 import com.ecjtu.assistant.utils.GlideImageLoader;
+import com.ecjtu.assistant.utils.ReptileUtils;
 import com.ecjtu.assistant.utils.ScreenUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -71,17 +75,18 @@ public class NewsItemTwoFragment extends BaseFragment implements SwipeRefreshLay
         context = getActivity();
         initView();
 
-        dbManager = new DBManager(getActivity());
-        sqLiteDatabase = dbManager.openDatabase(getActivity());
-        allNewsList = dbManager.querynotice(sqLiteDatabase, null, null, null);
+//        dbManager = new DBManager(getActivity());
+//        sqLiteDatabase = dbManager.openDatabase(getActivity());
+//        allNewsList = dbManager.querynotice(sqLiteDatabase, null, null, null);
 
 
 
-        BannerDBManager bannerDBManager = new BannerDBManager(getActivity());
-        SQLiteDatabase sqLiteDatabase = bannerDBManager.openDatabase(getActivity());
-        banerList = bannerDBManager.queryAll(sqLiteDatabase, null, null, null);
+//        BannerDBManager bannerDBManager = new BannerDBManager(getActivity());
+//        SQLiteDatabase sqLiteDatabase = bannerDBManager.openDatabase(getActivity());
+//        banerList = bannerDBManager.queryAll(sqLiteDatabase, null, null, null);
+        getBanerList();
 
-        setDataForView( ) ;
+//        setDataForView( ) ;
 
         initData();
         return contentView;
@@ -143,7 +148,7 @@ public class NewsItemTwoFragment extends BaseFragment implements SwipeRefreshLay
 
     private void setDataForView( ) {
 
-        newsRecyclerViewAdapter.addDatas(newsList);
+        //newsRecyclerViewAdapter.addDatas(newsList);
         newsRecyclerViewAdapter.setItemClickListener(new BaseRecycleViewHolderView.MyItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -151,10 +156,11 @@ public class NewsItemTwoFragment extends BaseFragment implements SwipeRefreshLay
                     position = position - 1;
                 }
                 startActivity(new Intent(context, LifeInfoActivity.class)
-                        .putExtra("readNumber", newsList.get(position).number)
-                        .putExtra("newsLink", newsList.get(position).href));
-                int n=Integer.parseInt(newsList.get(position).number);
-                newsList.get(position).number=(n+1)+"";
+//                        .putExtra("readNumber", newsList.get(position).number)
+//                        .putExtra("newsLink", newsList.get(position).href));
+                        .putExtra("newsLink", newsRecyclerViewAdapter.getDatas().get(position).href));
+//                int n=Integer.parseInt(newsList.get(position).number);
+//                newsList.get(position).number=(n+1)+"";
                 newsRecyclerViewAdapter.notifyDataSetChanged();
             }
         });
@@ -198,30 +204,94 @@ public class NewsItemTwoFragment extends BaseFragment implements SwipeRefreshLay
         newsRecyclerViewAdapter.setHeaderView(header);
     }
 
+    private String urlSuffix = "";
     private void initData() {
-        int pageNum=3;
-        boolean b=false;
-        for (int i = (currentPage-1)*pageNum; i < ((currentPage-1)*pageNum)+pageNum; i++) {
-            if (i<allNewsList.size()) {
-                newsRecyclerViewAdapter.addData(allNewsList.get(i));
-            }else {
-                b=true;
-            }
+        urlSuffix = "39/list" + currentPage + ".htm";
+        if(currentPage == 1){
+            //第一页没有1这个数字
+            urlSuffix = "39/list.htm";
         }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //清空newslist
+                newsList.clear();
 
-        if (b){
-            Toast.makeText(context, "没有更多数据了~", Toast.LENGTH_SHORT).show();
-            this.currentPage--;
-        }
+                newsList = ReptileUtils.getNewsList(urlSuffix);
+                Message msg = new Message();
+                msg.what = 1;
+                handler.sendMessage(msg);
+            }
+        }).start();
+//        int pageNum=3;
+//        boolean b=false;
+//        for (int i = (currentPage-1)*pageNum; i < ((currentPage-1)*pageNum)+pageNum; i++) {
+//            if (i<allNewsList.size()) {
+//                newsRecyclerViewAdapter.addData(allNewsList.get(i));
+//            }else {
+//                b=true;
+//            }
+//        }
+//
+//        if (b){
+//            Toast.makeText(context, "没有更多数据了~", Toast.LENGTH_SHORT).show();
+//            this.currentPage--;
+//        }
         swipeRefreshLayout.setRefreshing(false);
     }
+    private List<ScrollModel> scrollModelList = new ArrayList<ScrollModel>();
+    private void getBanerList(){
+        banerList.clear();
+        scrollModelList.clear();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                scrollModelList = ReptileUtils.getScrollModelList();
+                Message msg = new Message();
+                msg.what = 2;
+                handler.sendMessage(msg);
+            }
+        }).start();
+    }
+
+    private void convertToBanerList(){
+
+        for (ScrollModel scrollModel : scrollModelList) {
+            BannerDb.Record banner = new BannerDb.Record();
+            banner.title = scrollModel.getTitle();
+            banner.imgLink = scrollModel.getSrc();
+            banner.href = scrollModel.getUrl();
+            banerList.add(banner);
+        }
+    }
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1){
+//                for (RecordDb.Record record : newsList) {//这个方法 加载第二页时程序闪退
+//                    newsRecyclerViewAdapter.addData(record);
+//                }
+                //newsRecyclerViewAdapter.addDatas(newsList);
+                for(int i = 0;i<newsList.size();i++){ //这个方法加载第二页时无响应
+                    newsRecyclerViewAdapter.addData(newsList.get(i));
+                }
+            }
+            if (msg.what == 2){
+                convertToBanerList();
+                setDataForView();
+            }
+        }
+    };
 
     @Override
     public void onRefresh() {
-        currentPage = 1;
-        newsRecyclerViewAdapter.removeDatas();
-        initData();
+//        currentPage = 1;
+//        newsRecyclerViewAdapter.removeDatas();
+//        initData();
         Toast.makeText(context, "已成功刷新新闻列表~", Toast.LENGTH_SHORT).show();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
