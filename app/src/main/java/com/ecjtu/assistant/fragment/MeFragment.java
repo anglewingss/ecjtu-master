@@ -151,7 +151,7 @@ public class MeFragment extends Fragment {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        ReptileUtils.getScrollModelList();
+                        new ReptileUtils().getScrollModelList();
                     }
                 }).start();
             }

@@ -217,7 +217,7 @@ public class NewsItemOneFragment extends BaseFragment implements SwipeRefreshLay
                 //清空newslist
                 newsList.clear();
 
-                newsList = ReptileUtils.getNewsList(urlSuffix);
+                newsList = new ReptileUtils().getNewsList(urlSuffix);
                 Message msg = new Message();
                 msg.what = 1;
                 handler.sendMessage(msg);
@@ -247,7 +247,7 @@ public class NewsItemOneFragment extends BaseFragment implements SwipeRefreshLay
         new Thread(new Runnable() {
             @Override
             public void run() {
-                scrollModelList = ReptileUtils.getScrollModelList();
+                scrollModelList = new ReptileUtils().getScrollModelList();
                 Message msg = new Message();
                 msg.what = 2;
                 handler.sendMessage(msg);

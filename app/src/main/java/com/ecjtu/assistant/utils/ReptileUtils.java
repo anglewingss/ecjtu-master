@@ -24,16 +24,16 @@ import java.util.List;
  */
 public class ReptileUtils {
 
-    private static final String rootUrl = "http://www.qlu.edu.cn";
-    private static List<RecordDb.Record> recordList = new ArrayList<RecordDb.Record>();
-    private static List<ScrollModel> scrollModelList = new ArrayList<ScrollModel>();
+    private final String rootUrl = "http://www.qlu.edu.cn";
+    private List<RecordDb.Record> recordList = new ArrayList<RecordDb.Record>();
+    private List<ScrollModel> scrollModelList = new ArrayList<ScrollModel>();
 
     /**
      *
      * @param
      * @param urlSuffix url后缀
      */
-    public static  List<RecordDb.Record> getNewsList(String urlSuffix){
+    public  List<RecordDb.Record> getNewsList(String urlSuffix){
 
         recordList.clear();
         try {
@@ -60,7 +60,7 @@ public class ReptileUtils {
     }
 
 
-    public static List<ScrollModel> getScrollModelList(){
+    public  List<ScrollModel> getScrollModelList(){
         scrollModelList.clear();
         try {
             //String url = "http://www.qlu.edu.cn/38/list.htm";
@@ -93,7 +93,7 @@ public class ReptileUtils {
     }
 
 
-    private static String doget(String path) {
+    private  String doget(String path) {
         InputStream is = null;
         ByteArrayOutputStream baos = null;
         try {
