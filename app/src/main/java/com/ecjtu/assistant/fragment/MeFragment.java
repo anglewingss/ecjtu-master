@@ -93,13 +93,13 @@ public class MeFragment extends Fragment {
         view.findViewById(R.id.head_back).setVisibility(View.GONE);
 
         Button openWebPage = (Button) view.findViewById(R.id.openWebPage);
-        openWebPage.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), WebActivity.class));
-                getActivity().finish();
-            }
-        });
+//        openWebPage.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(getActivity(), WebActivity.class));
+//                getActivity().finish();
+//            }
+//        });
 
         Button connect = (Button) view.findViewById(R.id.connect);
 
@@ -185,5 +185,4 @@ public class MeFragment extends Fragment {
         }
         return sb.toString();
     }
-
 }

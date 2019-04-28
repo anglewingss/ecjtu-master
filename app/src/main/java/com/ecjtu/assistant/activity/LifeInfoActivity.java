@@ -51,7 +51,9 @@ public class LifeInfoActivity extends BaseActivity {
         try {
 
             Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("text/plain"); // 查询所有可以分享的Activity
+            //intent.setType("text/plain");
+            intent.setType("text/plain");
+            // 查询所有可以分享的Activity
             List<ResolveInfo> resInfo = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
             if (!resInfo.isEmpty()) {
                 List<Intent> targetedShareIntents = new ArrayList<Intent>();
@@ -67,7 +69,11 @@ public class LifeInfoActivity extends BaseActivity {
                     targeted.setClassName(activityInfo.packageName, info.activityInfo.name);
                     PackageManager pm = getApplication().getPackageManager();
                     // 微信有2个怎么区分-。- 朋友圈还有微信
-                    if (info.activityInfo.applicationInfo.loadLabel(pm).toString().equals("微信")) {
+                    if (info.activityInfo.applicationInfo.loadLabel(pm).toString().equals("微信") ||
+                        info.activityInfo.applicationInfo.loadLabel(pm).toString().equals("短信") ||
+                        info.activityInfo.applicationInfo.loadLabel(pm).toString().equals("便签") ||
+                        info.activityInfo.applicationInfo.loadLabel(pm).toString().equals("QQ") ||
+                        info.activityInfo.applicationInfo.loadLabel(pm).toString().equals("蓝牙")) {
                         targetedShareIntents.add(targeted);
                     }
                 } // 选择分享时的标题
