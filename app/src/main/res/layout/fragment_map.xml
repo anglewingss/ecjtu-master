@@ -42,33 +42,34 @@
                 android:id="@+id/edit_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="5dp"
+                android:layout_alignParentTop="true"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/rectangle_radius_fen"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:visibility="visible">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:text="起点····终点"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="10dp"-->
+                    <!--android:layout_marginBottom="10dp"-->
+                    <!--android:gravity="center"-->
+                    <!--android:text="起点····终点"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:textStyle="bold" />-->
 
-                <EditText
-                    android:id="@+id/start"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="7dp"
-                    android:background="@drawable/creat_normal_edittext"
-                    android:drawableLeft="@drawable/radio_red"
-                    android:drawablePadding="5dp"
-                    android:textColor="#303030"
-                    android:textSize="15dp" />
+                <!--<EditText-->
+                    <!--android:id="@+id/start"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_margin="7dp"-->
+                    <!--android:background="@drawable/creat_normal_edittext"-->
+                    <!--android:drawableLeft="@drawable/radio_red"-->
+                    <!--android:drawablePadding="5dp"-->
+                    <!--android:textColor="#303030"-->
+                    <!--android:textSize="15dp" />-->
 
                 <EditText
                     android:id="@+id/end"
@@ -81,17 +82,17 @@
                     android:hint="您要去哪儿"
                     android:textSize="15dp" />
 
-                <Button
-                    android:id="@+id/customer_go"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/transparent_mask"
-                    android:gravity="center"
-                    android:text="现在出发"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                <!--<Button-->
+                    <!--android:id="@+id/customer_go"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:layout_marginBottom="5dp"-->
+                    <!--android:background="@drawable/transparent_mask"-->
+                    <!--android:gravity="center"-->
+                    <!--android:text="现在出发"-->
+                    <!--android:textSize="18sp"-->
+                    <!--android:textStyle="bold" />-->
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>

@@ -158,9 +158,9 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
     public void initView() {
         //mBaidumap.setMyLocationEnabled(true);
 
-        start_edit = (EditText) view.findViewById(R.id.start);
+//        start_edit = (EditText) view.findViewById(R.id.start);
         end_edit = (EditText) view.findViewById(R.id.end);
-        query_edit = (EditText) view.findViewById(R.id.edit_query);
+//        query_edit = (EditText) view.findViewById(R.id.edit_query);
 
     }
 
@@ -251,19 +251,19 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Button button = (Button) view.findViewById(R.id.customer_go);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                route = null;
-                mBaidumap.clear();
-                // 设置起终点信息，对于tranist search 来说，城市名无意义
-                PlanNode stNode = PlanNode.withCityNameAndPlaceName(localcity, start_edit.getText().toString());
-                PlanNode enNode = PlanNode.withCityNameAndPlaceName(localcity, end_edit.getText().toString());
-                mSearch.transitSearch((new TransitRoutePlanOption())
-                        .from(stNode).city(localcity).to(enNode));
-            }
-        });
+//        Button button = (Button) view.findViewById(R.id.customer_go);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                route = null;
+//                mBaidumap.clear();
+//                // 设置起终点信息，对于tranist search 来说，城市名无意义
+//                PlanNode stNode = PlanNode.withCityNameAndPlaceName(localcity, start_edit.getText().toString());
+//                PlanNode enNode = PlanNode.withCityNameAndPlaceName(localcity, end_edit.getText().toString());
+//                mSearch.transitSearch((new TransitRoutePlanOption())
+//                        .from(stNode).city(localcity).to(enNode));
+//            }
+//        });
 //        Button search = (Button) view.findViewById(R.id.btn_search);
 //        search.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -615,7 +615,7 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
                 MapStatus.Builder builder = new MapStatus.Builder();
                 builder.target(ll).zoom(18.0f);
                 mBaidumap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-                start_edit.setText(location.getAddrStr());
+//                start_edit.setText(location.getAddrStr());
                 MyToast("当前所在位置：" + location.getAddrStr());
                 localcity = location.getCity();
                 String mm = "customer " + "location " + location.getLatitude() + " " + location.getLongitude() + "\n";
