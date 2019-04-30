@@ -264,15 +264,15 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
                         .from(stNode).city(localcity).to(enNode));
             }
         });
-        Button search = (Button) view.findViewById(R.id.btn_search);
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                busSearch.searchInCity((new PoiCitySearchOption()).city(
-                        localcity)
-                        .keyword(query_edit.getText().toString()));
-            }
-        });
+//        Button search = (Button) view.findViewById(R.id.btn_search);
+//        search.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                busSearch.searchInCity((new PoiCitySearchOption()).city(
+//                        localcity)
+//                        .keyword(query_edit.getText().toString()));
+//            }
+//        });
 
     }
 

@@ -8,26 +8,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
     </com.baidu.mapapi.map.MapView>
-    <LinearLayout
-        android:id="@+id/linear_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp">
+    <!--<LinearLayout-->
+        <!--android:id="@+id/linear_layout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="@color/white"-->
+        <!--android:paddingBottom="10dp"-->
+        <!--android:paddingTop="10dp">-->
 
-        <EditText
-            android:id="@+id/edit_query"
-            android:layout_height="wrap_content"
-            android:layout_width="300dp"
-            android:hint="输入公交线路号 如223"/>
-        <Button
-            android:id="@+id/btn_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="确定"/>
+        <!--<EditText-->
+            <!--android:id="@+id/edit_query"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_width="300dp"-->
+            <!--android:hint="输入公交线路号 如223"/>-->
+        <!--<Button-->
+            <!--android:id="@+id/btn_search"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="确定"/>-->
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
