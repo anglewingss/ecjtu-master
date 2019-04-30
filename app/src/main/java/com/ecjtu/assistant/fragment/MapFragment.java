@@ -609,7 +609,7 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
                     // 此处设置开发者获取到的方向信息，顺时针0-360
                     .direction(100).latitude(location.getLatitude()).longitude(location.getLongitude()).build();
             mBaidumap.setMyLocationData(locData);
-            //if (isFirstLoc) {
+            if (isFirstLoc) {
                 isFirstLoc = false;
                 LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
                 MapStatus.Builder builder = new MapStatus.Builder();
@@ -647,7 +647,7 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
 //                    dialog.show();
 //                }
             }
-        //}
+        }
 
         public void onReceivePoi(BDLocation poiLocation) {
         }
