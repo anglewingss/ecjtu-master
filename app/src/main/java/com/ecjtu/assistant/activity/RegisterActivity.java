@@ -34,6 +34,10 @@ public class RegisterActivity extends BaseActivity {
         pw = (TextView) findViewById(R.id.et_pw);
         pw_again = (TextView) findViewById(R.id.et_pw_again);
 
+        tel.setText("123");
+        pw.setText("123");
+        pw_again.setText("123");
+
         setRightViewVisible(false);
         setLeftViewVisible(false);
         setTitle("注册");

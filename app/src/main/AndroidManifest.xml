@@ -32,7 +32,6 @@
     <!-- 摄影机 -->
     <uses-permission android:name="android.permission.CAMERA" />
 
-
     <application
         android:name="com.ecjtu.assistant.app.MyApplication"
         android:allowBackup="true"

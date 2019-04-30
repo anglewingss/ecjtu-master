@@ -1,14 +1,20 @@
 package com.ecjtu.assistant.fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,14 +84,15 @@ import java.util.List;
  */
 
 public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickListener,OnGetPoiSearchResultListener, OnGetRoutePlanResultListener {
-    private EditText start_edit, end_edit,query_edit;
+    private EditText start_edit, end_edit, query_edit;
     private PoiSearch busSearch = null;
     public String busLineId;
     private View view;
     private String localcity;// 记录当前城市
     RouteLine route = null;
     OverlayManager routeOverlay = null;
-    private MyLocationConfiguration.LocationMode mCurrentMode;;
+    private MyLocationConfiguration.LocationMode mCurrentMode;
+    ;
     boolean useDefaultIcon = false;
     TransitRouteResult nowResultransit = null;
     boolean hasShownDialogue = false;
@@ -101,6 +108,7 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
     WalkingRouteResult nowResultwalk = null;
     // 定位相关
     LocationClient mLocClient;
+    //private LocationClient locationClient;
     public MyLocationListenner myListener = new MyLocationListenner();
 
     @Nullable
@@ -109,34 +117,56 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
 
         mContext = getActivity();
         SDKInitializer.initialize(getActivity().getApplicationContext());
-        view = inflater.inflate(R.layout.fragment_map,container,false);
+        view = inflater.inflate(R.layout.fragment_map, container, false);
         initView();
         // 初始化地图
         inintmap();
 
+        //获取定位权限
+        geLocationPower();
         mCurrentMode = MyLocationConfiguration.LocationMode.COMPASS;
 
         // 地图点击事件处理
         mBaidumap.setOnMapClickListener(this);
         // 初始化搜索模块，注册事件监听
         mSearch = RoutePlanSearch.newInstance();
-        busSearch=PoiSearch.newInstance();
+        busSearch = PoiSearch.newInstance();
         busSearch.setOnGetPoiSearchResultListener(this);
         mSearch.setOnGetRoutePlanResultListener(this);
+        //mLocClient.start();
         return view;
     }
 
-    public void initView() {
+    //获取定位权限
+    public void geLocationPower() {
+        List<String> permissionList = new ArrayList<String>();
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+//        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED){
+//            permissionList.add(Manifest.permission.READ_PHONE_STATE);
+//        }
+//        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+//            permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//        }
+        if (!permissionList.isEmpty()) {
+            String[] permissions = permissionList.toArray(new String[permissionList.size()]);
+            ActivityCompat.requestPermissions(getActivity(), permissions, 1);
+        }
+    }
 
-        start_edit = (EditText)view.findViewById(R.id.start);
-        end_edit = (EditText)view.findViewById(R.id.end);
-        query_edit=(EditText)view.findViewById(R.id.edit_query);
+    public void initView() {
+        //mBaidumap.setMyLocationEnabled(true);
+
+        start_edit = (EditText) view.findViewById(R.id.start);
+        end_edit = (EditText) view.findViewById(R.id.end);
+        query_edit = (EditText) view.findViewById(R.id.edit_query);
 
     }
 
     public void inintmap() {
         // 地图初始化
-        mMapView = (MapView)view.findViewById(R.id.mTexturemap);
+        mMapView = (MapView) view.findViewById(R.id.mTexturemap);
         mBaidumap = mMapView.getMap();
 
         // 不显示缩放比例尺
@@ -148,6 +178,34 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
         // 定位初始化
         mLocClient = new LocationClient(mContext);
         mLocClient.registerLocationListener(myListener);
+        //先检测定位权限，然后在判断系统是否开启网络定位或者GPS定位
+        geLocationPower();
+
+        if (!gPSIsOPen(mContext)) {
+            MyToast("请开启系统定位服务");
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+            dialog.setTitle("请打开系统定位服务");
+            dialog.setMessage("为方便在正常使用该地图服务，请打开系统定位服务！");
+            dialog.setPositiveButton("设置", new android.content.DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                    // 转到手机设置界面，用户设置GPS
+                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    Toast.makeText(getActivity(), "打开后直接点击返回键即可，若不打开返回下次将再次出现", Toast.LENGTH_LONG).show();
+                    startActivityForResult(intent, 0); // 设置完成后返回到原来的界面
+                    mBaidumap.setMyLocationEnabled(true);
+                    mLocClient.start();
+                }
+            });
+            dialog.setNeutralButton("取消", new android.content.DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                    arg0.dismiss();
+                }
+            });
+            dialog.show();
+        }
+
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true); // 打开gps;
         option.setCoorType("bd09ll"); // 设置坐标类型
@@ -157,8 +215,37 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
         // 可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
         option.setIsNeedAddress(true);// 可选，设置是否需要地址信息，默认不需要
         option.setIsNeedLocationPoiList(true);// 可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
+
         mLocClient.setLocOption(option);
         mLocClient.start();
+    }
+
+    // 回调方法，从第二个页面回来的时候会执行这个方法
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (requestCode == 0){
+            mBaidumap.setMyLocationEnabled(true);
+            mLocClient.start();
+        }
+    }
+
+    /**
+     * 判断GPS是否开启，GPS或者AGPS开启一个就认为是开启的
+     *
+     * @param context
+     * @return true 表示开启
+     */
+    public final boolean gPSIsOPen(final Context context) {
+        LocationManager locationManager
+                = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        // 通过GPS卫星定位，定位级别可以精确到街（通过24颗卫星定位，在室外和空旷的地方定位准确、速度快）
+        boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        // 通过WLAN或移动网络(3G/2G)确定的位置（也称作AGPS，辅助GPS定位。主要用于在室内或遮盖物（建筑群或茂密的深林等）密集的地方定位）
+        boolean network = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        if (gps || network) {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -177,7 +264,7 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
                         .from(stNode).city(localcity).to(enNode));
             }
         });
-        Button search=(Button)view.findViewById(R.id.btn_search);
+        Button search = (Button) view.findViewById(R.id.btn_search);
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,7 +275,6 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
         });
 
     }
-
 
 
     @Override
@@ -269,9 +355,9 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
         // 遍历所有poi，找到类型为公交线路的poi
         for (PoiInfo poi : poiResult.getAllPoi()) {
             if (poi.type == PoiInfo.POITYPE.BUS_LINE) {
-                busLineId=poi.uid;
-                Intent intent=new Intent(getActivity(),BusLineActivity.class);
-                intent.putExtra("id",busLineId);
+                busLineId = poi.uid;
+                Intent intent = new Intent(getActivity(), BusLineActivity.class);
+                intent.putExtra("id", busLineId);
                 startActivity(intent);
                 break;
             }
@@ -401,7 +487,6 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
     }
 
 
-
     @Override
     public void onGetMassTransitRouteResult(MassTransitRouteResult massTransitRouteResult) {
 
@@ -421,7 +506,6 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
     public void onGetBikingRouteResult(BikingRouteResult bikingRouteResult) {
 
     }
-
 
 
     // 定制RouteOverly
@@ -487,10 +571,16 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
         super.onPause();
     }
 
+    public void onRestart() {
+        super.onStart();
+        //mLocClient.start();
+    }
+
     @Override
     public void onResume() {
         mMapView.onResume();
         super.onResume();
+        //mLocClient.start();
     }
 
     @Override
@@ -519,7 +609,7 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
                     // 此处设置开发者获取到的方向信息，顺时针0-360
                     .direction(100).latitude(location.getLatitude()).longitude(location.getLongitude()).build();
             mBaidumap.setMyLocationData(locData);
-            if (isFirstLoc) {
+            //if (isFirstLoc) {
                 isFirstLoc = false;
                 LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
                 MapStatus.Builder builder = new MapStatus.Builder();
@@ -529,8 +619,35 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
                 MyToast("当前所在位置：" + location.getAddrStr());
                 localcity = location.getCity();
                 String mm = "customer " + "location " + location.getLatitude() + " " + location.getLongitude() + "\n";
+
+
+//                //判断GPS 是否打开
+//                LocationManager locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+//                // 判断GPS模块是否开启，如果没有则开启
+//                if (!locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
+//                    Toast.makeText(getActivity(), "请打开GPS", Toast.LENGTH_SHORT).show();
+//                    final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+//                    dialog.setTitle("请打开GPS连接");
+//                    dialog.setMessage("为方便司机更容易接到您，请先打开GPS");
+//                    dialog.setPositiveButton("设置", new android.content.DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface arg0, int arg1) {
+//                            // 转到手机设置界面，用户设置GPS
+//                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//                            Toast.makeText(getActivity(), "打开后直接点击返回键即可，若不打开返回下次将再次出现", Toast.LENGTH_LONG).show();
+//                            startActivityForResult(intent, 0); // 设置完成后返回到原来的界面
+//                        }
+//                    });
+//                    dialog.setNeutralButton("取消", new android.content.DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface arg0, int arg1) {
+//                            arg0.dismiss();
+//                        }
+//                    });
+//                    dialog.show();
+//                }
             }
-        }
+        //}
 
         public void onReceivePoi(BDLocation poiLocation) {
         }
