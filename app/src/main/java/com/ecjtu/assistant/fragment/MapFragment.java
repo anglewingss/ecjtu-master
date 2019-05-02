@@ -18,6 +18,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,7 +91,7 @@ import java.util.List;
 public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickListener,OnGetPoiSearchResultListener, OnGetRoutePlanResultListener {
     private EditText start_edit, end_edit, query_edit;
     private ListView resultListView;
-    private ListAdapter resultAdpter;
+    private ArrayAdapter resultAdpter;
     private List<String> poiResultList = new ArrayList<>();
     private List<PoiInfo> poiInfoList = new ArrayList<PoiInfo>();
     private PoiSearch poiSearch = null;
@@ -154,15 +155,16 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
         poiSearch.setOnGetPoiSearchResultListener(new OnGetPoiSearchResultListener() {
             @Override
             public void onGetPoiResult(PoiResult poiResult) {
-                poiInfoList.clear();
-                poiInfoList = poiResult.getAllPoi();
-                for (PoiInfo poiInfo: poiInfoList) {
-                    System.out.println(poiInfo.name);
-                    poiResultList.add(poiInfo.name);
+                if (poiResult.getTotalPoiNum() > 0){
+                    poiInfoList.clear();
+                    poiResultList.clear();
+                    poiInfoList = poiResult.getAllPoi();
+                    for (PoiInfo poiInfo: poiInfoList) {
+                        System.out.println(poiInfo.name);
+                        poiResultList.add(poiInfo.name);
+                    }
+                    resultAdpter.notifyDataSetChanged();
                 }
-
-                resultAdpter = new ArrayAdapter<String> (getActivity(),android.R.layout.simple_expandable_list_item_1,poiResultList);
-                resultListView.setAdapter(resultAdpter);
             }
 
             @Override
@@ -308,18 +310,16 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        //初始化监听listview显示不可见
+        resultListView.setVisibility(View.GONE);
 
-        Button button = (Button) view.findViewById(R.id.btn_search);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                poiSearch.searchInCity(new PoiCitySearchOption()
-//                        .city("济南")
-//                        .keyword(query_edit.getText().toString())
-//                        .pageNum(10));
-//            }
-//        });
+        resultAdpter = new ArrayAdapter<String> (getActivity(),android.R.layout.simple_expandable_list_item_1,poiResultList);
+        resultListView.setAdapter(resultAdpter);
         changeTextListener();
+
+        //listview点击事件
+        listViewItemClickListener();
+
 //        Button button = (Button) view.findViewById(R.id.customer_go);
 //        button.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -346,14 +346,31 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
     }
 
     /**
+     * listview点击事件
+     */
+    public void listViewItemClickListener(){
+        resultListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getActivity(),resultAdpter.getItem(position).toString(),Toast.LENGTH_LONG).show();
+                query_edit.setText(resultAdpter.getItem(position).toString());
+                resultListView.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    /**
      * text文本框改变监听事件
      */
     public void changeTextListener(){
 
+//        resultAdpter = new ArrayAdapter<String> (getActivity(),android.R.layout.simple_expandable_list_item_1,poiResultList);
+//        resultListView.setAdapter(resultAdpter);
         query_edit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                poiInfoList.clear();
+                //resultAdpter.
             }
 
             @Override
@@ -363,13 +380,17 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() == 0){
-
+                if (s.length() != 0){
+                    resultListView.setVisibility(View.VISIBLE);
+                    poiSearch.searchInCity(new PoiCitySearchOption()
+                            .city("济南")
+                            .keyword("齐鲁工业大学" + query_edit.getText().toString())
+                            .pageCapacity(100)
+                            .pageNum(0));
                 }
-                poiSearch.searchInCity(new PoiCitySearchOption()
-                        .city("济南")
-                        .keyword(query_edit.getText().toString())
-                        .pageNum(10));
+                else{
+                    resultListView.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -678,6 +699,21 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
     public void onResume() {
         mMapView.onResume();
         super.onResume();
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                if(keyEvent.getAction() == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_BACK){
+                    if (resultListView.getVisibility() == View.VISIBLE){
+                        resultListView.setVisibility(View.GONE);
+                    }
+//                    Toast.makeText(getActivity(), "按了返回键", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            }
+        });
         //mLocClient.start();
     }
 

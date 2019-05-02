@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android" >
-    android:shape="rectangle">
+    android:shape="rectangle">
     <!-- Corner的属性是设置圆角的半径的 -->
     <corners
         android:bottomLeftRadius="8dp"
@@ -19,5 +19,4 @@
     <stroke
         android:width="1dip"
         android:color="#757575" />
-
 </shape>
