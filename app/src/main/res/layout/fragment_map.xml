@@ -8,47 +8,45 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
     </com.baidu.mapapi.map.MapView>
-    <!--<LinearLayout-->
-        <!--android:id="@+id/linear_layout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:background="@color/white"-->
-        <!--android:paddingBottom="10dp"-->
-        <!--android:paddingTop="10dp">-->
-
-        <!--<EditText-->
-            <!--android:id="@+id/edit_query"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_width="300dp"-->
-            <!--android:hint="输入公交线路号 如223"/>-->
-        <!--<Button-->
-            <!--android:id="@+id/btn_search"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="确定"/>-->
-
-    <!--</LinearLayout>-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
-
-
-        <RelativeLayout
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/linear_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:id="@+id/edit_layout"
+            <EditText
+                android:id="@+id/edit_query"
+                android:layout_height="wrap_content"
+                android:layout_width="300dp"
+                android:hint="搜索学校内地点"/>
+            <Button
+                android:id="@+id/btn_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="导航"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/resultViewList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/rectangle_radius_fen"
-                android:orientation="vertical"
                 android:visibility="visible">
+
+            </ListView>
+        </LinearLayout>
+    </LinearLayout>
+
+
 
                 <!--<TextView-->
                     <!--android:layout_width="match_parent"-->
@@ -71,16 +69,16 @@
                     <!--android:textColor="#303030"-->
                     <!--android:textSize="15dp" />-->
 
-                <EditText
-                    android:id="@+id/end"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="7dp"
-                    android:background="@drawable/creat_normal_edittext"
-                    android:drawableLeft="@drawable/radio_blue"
-                    android:drawablePadding="5dp"
-                    android:hint="您要去哪儿"
-                    android:textSize="15dp" />
+                <!--<EditText-->
+                    <!--android:id="@+id/end"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_margin="7dp"-->
+                    <!--android:background="@drawable/creat_normal_edittext"-->
+                    <!--android:drawableLeft="@drawable/radio_blue"-->
+                    <!--android:drawablePadding="5dp"-->
+                    <!--android:hint="您要去哪儿"-->
+                    <!--android:textSize="15dp" />-->
 
                 <!--<Button-->
                     <!--android:id="@+id/customer_go"-->
@@ -93,8 +91,4 @@
                     <!--android:text="现在出发"-->
                     <!--android:textSize="18sp"-->
                     <!--android:textStyle="bold" />-->
-            </LinearLayout>
-        </RelativeLayout>
-    </LinearLayout>
-
 </FrameLayout>

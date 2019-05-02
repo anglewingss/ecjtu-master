@@ -15,6 +15,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +24,10 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -85,7 +89,11 @@ import java.util.List;
 
 public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickListener,OnGetPoiSearchResultListener, OnGetRoutePlanResultListener {
     private EditText start_edit, end_edit, query_edit;
-    private PoiSearch busSearch = null;
+    private ListView resultListView;
+    private ListAdapter resultAdpter;
+    private List<String> poiResultList = new ArrayList<>();
+    private List<PoiInfo> poiInfoList = new ArrayList<PoiInfo>();
+    private PoiSearch poiSearch = null;
     public String busLineId;
     private View view;
     private String localcity;// 记录当前城市
@@ -110,7 +118,6 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
     LocationClient mLocClient;
     //private LocationClient locationClient;
     public MyLocationListenner myListener = new MyLocationListenner();
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -127,14 +134,63 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
         mCurrentMode = MyLocationConfiguration.LocationMode.COMPASS;
 
         // 地图点击事件处理
-        mBaidumap.setOnMapClickListener(this);
+        mapClick();
+
         // 初始化搜索模块，注册事件监听
         mSearch = RoutePlanSearch.newInstance();
-        busSearch = PoiSearch.newInstance();
-        busSearch.setOnGetPoiSearchResultListener(this);
+
         mSearch.setOnGetRoutePlanResultListener(this);
+        //POI搜索监听事件
+        poiSearchResultListener();
         //mLocClient.start();
         return view;
+    }
+
+    /**
+     * POI搜索监听事件
+     */
+    public void poiSearchResultListener(){
+        poiSearch = PoiSearch.newInstance();
+        poiSearch.setOnGetPoiSearchResultListener(new OnGetPoiSearchResultListener() {
+            @Override
+            public void onGetPoiResult(PoiResult poiResult) {
+                poiInfoList.clear();
+                poiInfoList = poiResult.getAllPoi();
+                for (PoiInfo poiInfo: poiInfoList) {
+                    System.out.println(poiInfo.name);
+                    poiResultList.add(poiInfo.name);
+                }
+
+                resultAdpter = new ArrayAdapter<String> (getActivity(),android.R.layout.simple_expandable_list_item_1,poiResultList);
+                resultListView.setAdapter(resultAdpter);
+            }
+
+            @Override
+            public void onGetPoiDetailResult(PoiDetailResult poiDetailResult) {
+            }
+
+            @Override
+            public void onGetPoiIndoorResult(PoiIndoorResult poiIndoorResult) {
+            }
+        });
+    }
+
+    /**
+     * 地图点击事件
+     */
+    public void mapClick(){
+        mBaidumap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+
+            }
+            @Override
+            public boolean onMapPoiClick(MapPoi mapPoi) {
+                Toast.makeText(getActivity(),mapPoi.getName(),Toast.LENGTH_LONG).show();
+                query_edit.setText(mapPoi.getName());
+                return false;
+            }
+        });
     }
 
     //获取定位权限
@@ -159,8 +215,9 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
         //mBaidumap.setMyLocationEnabled(true);
 
 //        start_edit = (EditText) view.findViewById(R.id.start);
-        end_edit = (EditText) view.findViewById(R.id.end);
-//        query_edit = (EditText) view.findViewById(R.id.edit_query);
+        //end_edit = (EditText) view.findViewById(R.id.end);
+        query_edit = (EditText) view.findViewById(R.id.edit_query);
+        resultListView = (ListView) view.findViewById(R.id.resultViewList);
 
     }
 
@@ -251,6 +308,18 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        Button button = (Button) view.findViewById(R.id.btn_search);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                poiSearch.searchInCity(new PoiCitySearchOption()
+//                        .city("济南")
+//                        .keyword(query_edit.getText().toString())
+//                        .pageNum(10));
+//            }
+//        });
+        changeTextListener();
 //        Button button = (Button) view.findViewById(R.id.customer_go);
 //        button.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -274,6 +343,35 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
 //            }
 //        });
 
+    }
+
+    /**
+     * text文本框改变监听事件
+     */
+    public void changeTextListener(){
+
+        query_edit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 0){
+
+                }
+                poiSearch.searchInCity(new PoiCitySearchOption()
+                        .city("济南")
+                        .keyword(query_edit.getText().toString())
+                        .pageNum(10));
+            }
+        });
     }
 
 
