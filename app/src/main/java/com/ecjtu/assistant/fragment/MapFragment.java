@@ -101,7 +101,7 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
     RouteLine route = null;
     OverlayManager routeOverlay = null;
     private MyLocationConfiguration.LocationMode mCurrentMode;
-    ;
+
     boolean useDefaultIcon = false;
     TransitRouteResult nowResultransit = null;
     boolean hasShownDialogue = false;
@@ -319,6 +319,8 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
 
         //listview点击事件
         listViewItemClickListener();
+
+//
 
 //        Button button = (Button) view.findViewById(R.id.customer_go);
 //        button.setOnClickListener(new View.OnClickListener() {
@@ -699,21 +701,6 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
     public void onResume() {
         mMapView.onResume();
         super.onResume();
-        getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if(keyEvent.getAction() == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_BACK){
-                    if (resultListView.getVisibility() == View.VISIBLE){
-                        resultListView.setVisibility(View.GONE);
-                    }
-//                    Toast.makeText(getActivity(), "按了返回键", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-                return false;
-            }
-        });
         //mLocClient.start();
     }
 
@@ -786,4 +773,19 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
         public void onReceivePoi(BDLocation poiLocation) {
         }
     }
+//    getView().setFocusableInTouchMode(true);
+//        getView().requestFocus();
+//        getView().setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+//                if(keyEvent.getAction() == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_BACK){
+//                    if (resultListView.getVisibility() == View.VISIBLE){
+//                        resultListView.setVisibility(View.GONE);
+//                    }
+////                    Toast.makeText(getActivity(), "按了返回键", Toast.LENGTH_SHORT).show();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 }
