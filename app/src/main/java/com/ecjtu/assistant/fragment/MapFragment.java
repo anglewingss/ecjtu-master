@@ -58,6 +58,7 @@ import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
 import com.baidu.mapapi.search.poi.PoiCitySearchOption;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
+import com.baidu.mapapi.search.poi.PoiDetailSearchResult;
 import com.baidu.mapapi.search.poi.PoiIndoorResult;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
@@ -169,6 +170,11 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
 
             @Override
             public void onGetPoiDetailResult(PoiDetailResult poiDetailResult) {
+            }
+
+            @Override
+            public void onGetPoiDetailResult(PoiDetailSearchResult poiDetailSearchResult) {
+
             }
 
             @Override
@@ -320,6 +326,14 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
         //listview点击事件
         listViewItemClickListener();
 
+        //导航按钮点击事件，开始导航
+        Button btn_navigation = (Button) view.findViewById(R.id.btn_navigation);
+        btn_navigation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 //
 
 //        Button button = (Button) view.findViewById(R.id.customer_go);
@@ -487,6 +501,11 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
 
     @Override
     public void onGetPoiDetailResult(PoiDetailResult poiDetailResult) {
+
+    }
+
+    @Override
+    public void onGetPoiDetailResult(PoiDetailSearchResult poiDetailSearchResult) {
 
     }
 
