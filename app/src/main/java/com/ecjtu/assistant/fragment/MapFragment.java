@@ -326,14 +326,6 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
         //listview点击事件
         listViewItemClickListener();
 
-        //导航按钮点击事件，开始导航
-        Button btn_navigation = (Button) view.findViewById(R.id.btn_navigation);
-        btn_navigation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
 //
 
 //        Button button = (Button) view.findViewById(R.id.customer_go);
