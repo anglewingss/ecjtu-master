@@ -45,8 +45,10 @@ import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.busline.BusLineResult;
 import com.baidu.mapapi.search.busline.BusLineSearch;
@@ -71,6 +73,7 @@ import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRoutePlanOption;
 import com.baidu.mapapi.search.route.TransitRouteResult;
+import com.baidu.mapapi.search.route.WalkingRouteLine;
 import com.baidu.mapapi.search.route.WalkingRoutePlanOption;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.ecjtu.assistant.R;
@@ -93,8 +96,10 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
     private EditText start_edit, end_edit, query_edit;
     private ListView resultListView;
     private ArrayAdapter resultAdpter;
-    private List<String> poiResultList = new ArrayList<>();
+    private List<String> poiResultList = new ArrayList<String>();
     private List<PoiInfo> poiInfoList = new ArrayList<PoiInfo>();
+    private LatLng myLatlng;
+    private LatLng goalLatlng;
     private PoiSearch poiSearch = null;
     public String busLineId;
     private View view;
@@ -326,6 +331,25 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
         //listview点击事件
         listViewItemClickListener();
 
+        Button btn_navigation = (Button) view.findViewById(R.id.btn_navigation);
+        btn_navigation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                route = null;
+                mBaidumap.clear();
+                // 设置起终点信息，对于tranist search 来说，城市名无意义
+//                PlanNode stNode = PlanNode.withCityNameAndPlaceName(localcity, start_edit.getText().toString());
+//                PlanNode enNode = PlanNode.withCityNameAndPlaceName(localcity, end_edit.getText().toString());
+                PlanNode stNode = PlanNode.withLocation(myLatlng);
+                PlanNode enNode = PlanNode.withLocation(goalLatlng);
+//                mSearch.transitSearch((new TransitRoutePlanOption())
+//                        .from(stNode).city(localcity).to(enNode));
+                mSearch.walkingSearch((new WalkingRoutePlanOption())
+                        .from(stNode)
+                        .to(enNode));
+            }
+        });
+
 //
 
 //        Button button = (Button) view.findViewById(R.id.customer_go);
@@ -361,6 +385,7 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getActivity(),resultAdpter.getItem(position).toString(),Toast.LENGTH_LONG).show();
+                goalLatlng = poiInfoList.get(position).location;
                 query_edit.setText(resultAdpter.getItem(position).toString());
                 resultListView.setVisibility(View.GONE);
             }
@@ -406,13 +431,14 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
 
     @Override
     public void onGetWalkingRouteResult(WalkingRouteResult result) {
-        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
-            Toast.makeText(getActivity(), "抱歉，未找到结果", Toast.LENGTH_SHORT).show();
+        if (null == result) {
+            return;
         }
+
         if (result.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
             // 起终点或途经点地址有岐义，通过以下接口获取建议查询信息
             // result.getSuggestAddrInfo()
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle("提示");
             builder.setMessage("检索地址有歧义，请重新设置。\n可通过getSuggestAddrInfo()接口获得建议查询信息");
             builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
@@ -424,12 +450,18 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
             builder.create().show();
             return;
         }
-        if (result.error == SearchResult.ERRORNO.NO_ERROR) {
+
+        if (result.error != SearchResult.ERRORNO.NO_ERROR) {
+            Toast.makeText(getActivity(), "抱歉，未找到结果", Toast.LENGTH_SHORT).show();
+        } else {
+//            nodeIndex = -1;
+//            mBtnPre.setVisibility(View.VISIBLE);
+//            mBtnNext.setVisibility(View.VISIBLE);
 
             if (result.getRouteLines().size() > 1) {
                 nowResultwalk = result;
                 if (!hasShownDialogue) {
-                    MyTransitDlg myTransitDlg = new MyTransitDlg(getActivity(),
+                    MyTransitDlg myTransitDlg = new MyTransitDlg(context,
                             result.getRouteLines(),
                             RouteLineAdapter.Type.WALKING_ROUTE);
                     myTransitDlg.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -465,10 +497,10 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
 
             } else {
                 Log.d("route result", "结果数<0");
-                return;
             }
 
         }
+
     }
 
 
@@ -744,6 +776,7 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
             if (isFirstLoc) {
                 isFirstLoc = false;
                 LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
+                myLatlng = ll;
                 MapStatus.Builder builder = new MapStatus.Builder();
                 builder.target(ll).zoom(18.0f);
                 mBaidumap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
