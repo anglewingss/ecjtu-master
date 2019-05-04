@@ -27,8 +27,8 @@
                 android:layout_width="300dp"
                 android:hint="搜索学校内地点"
                 android:background="@drawable/creat_normal_edittext"
-                android:singleLine="true"/>
-
+                android:singleLine="true"
+            />
             <Button
                 android:id="@+id/btn_navigation"
                 android:layout_width="wrap_content"
