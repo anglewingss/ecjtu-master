@@ -1,5 +1,6 @@
 package com.ecjtu.assistant.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -49,7 +50,10 @@ public class NewsItemTwoFragment extends BaseFragment implements SwipeRefreshLay
     private RecyclerView newsRecyclerView;
     private NewsRecyclerViewAdapter newsRecyclerViewAdapter;
     private Banner banner;
+    private ProgressDialog progressDialog;
 
+    private boolean isFirstCreateView = true;
+    private int requestLinkNum = 0;
     private int currentPage = 1;
     private List<RecordDb.Record> newsList = new ArrayList<>();
     private List<RecordDb.Record> allNewsList = new ArrayList<>();
@@ -118,7 +122,13 @@ public class NewsItemTwoFragment extends BaseFragment implements SwipeRefreshLay
                 .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources()
                         .getDisplayMetrics()));
 
+        requestLinkNum = 0;
+        if (isFirstCreateView){
+            showProgressDialog();
+            isFirstCreateView = false;
+        }
     }
+
     DBManager dbManager;
     SQLiteDatabase sqLiteDatabase;
 
@@ -146,7 +156,7 @@ public class NewsItemTwoFragment extends BaseFragment implements SwipeRefreshLay
     }
 
 
-    private void setDataForView( ) {
+    private void setDataForView() {
 
         //newsRecyclerViewAdapter.addDatas(newsList);
         newsRecyclerViewAdapter.setItemClickListener(new BaseRecycleViewHolderView.MyItemClickListener() {
@@ -277,11 +287,22 @@ public class NewsItemTwoFragment extends BaseFragment implements SwipeRefreshLay
                 for(int i = 0;i<newsList.size();i++){ //这个方法加载第二页时无响应
                     newsRecyclerViewAdapter.addData(newsList.get(i));
                 }
+
+                requestLinkNum++;
+                if (requestLinkNum == 2){
+                    closeProgressDialog();
+                }
             }
             if (msg.what == 2){
                 convertToBanerList();
                 setDataForView();
+
+                requestLinkNum++;
+                if (requestLinkNum == 2){
+                    closeProgressDialog();
+                }
             }
+
         }
     };
 
@@ -299,6 +320,28 @@ public class NewsItemTwoFragment extends BaseFragment implements SwipeRefreshLay
         startActivity(new Intent(context, LifeInfoActivity.class)
                 .putExtra("readNumber", "6666")
                 .putExtra("newsLink", banerList.get(position).href));
+    }
+
+    /**
+     * 显示进度框
+     */
+    private void showProgressDialog() {
+        if(progressDialog==null)
+        {
+            progressDialog=new ProgressDialog(getActivity());
+            progressDialog.setMessage("正在加载....");
+            progressDialog.setCanceledOnTouchOutside(false);
+        }
+        progressDialog.show();
+    }
+
+    /**
+     * 关闭进度条
+     */
+    private void closeProgressDialog()
+    {
+        if(progressDialog!=null)
+            progressDialog.dismiss();
     }
 
 }

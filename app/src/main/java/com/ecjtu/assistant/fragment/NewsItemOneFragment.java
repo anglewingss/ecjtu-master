@@ -119,17 +119,12 @@ public class NewsItemOneFragment extends BaseFragment implements SwipeRefreshLay
         swipeRefreshLayout.setProgressViewOffset(false, 0, (int) TypedValue
                 .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources()
                         .getDisplayMetrics()));
-    }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         requestLinkNum = 0;
         if (isFirstCreateView){
             showProgressDialog();
             isFirstCreateView = false;
         }
-
     }
 
     DBManager dbManager;
