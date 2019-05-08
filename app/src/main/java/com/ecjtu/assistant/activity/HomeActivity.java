@@ -1,6 +1,5 @@
 package com.ecjtu.assistant.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -15,6 +14,8 @@ import com.ecjtu.assistant.fragment.LibraryFragment;
 import com.ecjtu.assistant.fragment.MapFragment;
 import com.ecjtu.assistant.fragment.MeFragment;
 import com.ecjtu.assistant.fragment.NewsFragment;
+import com.ecjtu.assistant.fragment.WeatherFragment;
+import com.ecjtu.assistant.fragment.WeatherMainFragment;
 import com.ecjtu.assistant.utils.ScreenUtils;
 
 import static android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN;
@@ -43,6 +44,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
     private MapFragment mapFragment;
     private CourseFragment courseFragment;
     private MeFragment moreFragment;
+    private WeatherFragment weatherFragment;
 
 
 
@@ -97,12 +99,12 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
             case 1:
 
-                if (libraryFragment == null) {
+                if (weatherFragment == null) {
 
-                    libraryFragment = new LibraryFragment();
-                    transaction.add(R.id.frame_layout, libraryFragment);
+                    weatherFragment = new WeatherFragment();
+                    transaction.add(R.id.frame_layout, weatherFragment);
                 } else {
-                    transaction.show(libraryFragment);
+                    transaction.show(weatherFragment);
                 }
 
                 break;
@@ -153,8 +155,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             transaction.hide(newsFragment);
         }
 
-        if (libraryFragment != null) {
-            transaction.hide(libraryFragment);
+        if (weatherFragment != null) {
+            transaction.hide(weatherFragment);
         }
 
         if (moreFragment != null) {
@@ -206,6 +208,9 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
                 setTabSelection(4);
                 break;
         }
+    }
 
+    public WeatherFragment getWeatherFragment() {
+        return weatherFragment;
     }
 }

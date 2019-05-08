@@ -8,6 +8,9 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.cookie.CookieJarImpl;
 import com.zhy.http.okhttp.cookie.store.PersistentCookieStore;
 
+
+import org.litepal.LitePalApplication;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -17,7 +20,7 @@ import okhttp3.OkHttpClient;
  * Created by Bruce on 2016/10/24.
  */
 
-public class MyApplication extends Application {
+public class MyApplication extends LitePalApplication {
 
     public Bitmap bit;//用户自己的头像
     public String name;
@@ -70,6 +73,13 @@ public class MyApplication extends Application {
         this.school = school;
     }
 
+    public Bitmap getBit() {
+        return bit;
+    }
+
+    public void setBit(Bitmap bit) {
+        this.bit = bit;
+    }
 
     private static MyApplication instance;
 

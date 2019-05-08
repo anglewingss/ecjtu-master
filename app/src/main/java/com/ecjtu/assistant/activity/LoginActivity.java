@@ -8,6 +8,7 @@ import android.widget.EditText;
 
 import com.ecjtu.assistant.R;
 import com.ecjtu.assistant.app.MyApplication;
+import com.ecjtu.assistant.app.OtherApplication;
 import com.ecjtu.assistant.db.StudentDb;
 
 import java.util.List;

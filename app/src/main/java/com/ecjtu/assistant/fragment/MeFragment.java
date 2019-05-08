@@ -23,10 +23,12 @@ import com.ecjtu.assistant.activity.EditInfoActivity;
 import com.ecjtu.assistant.activity.LoginActivity;
 import com.ecjtu.assistant.activity.WebActivity;
 import com.ecjtu.assistant.app.MyApplication;
+import com.ecjtu.assistant.app.OtherApplication;
 import com.ecjtu.assistant.db.StudentDb;
 import com.ecjtu.assistant.utils.NetWorkUtils;
 import com.ecjtu.assistant.utils.ReptileUtils;
 import com.ecjtu.assistant.utils.ToastUtils;
+import com.ecjtu.weather.MainActivity;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -109,7 +111,9 @@ public class MeFragment extends Fragment {
                 new Thread(new Runnable() {
 
                     private HttpURLConnection conn;
-                    private String strurl = NetWorkUtils.url + "/request/test";
+                    //private String strurl = NetWorkUtils.url + "/request/test";
+                    private String strurl = "http://api.map.baidu.com/telematics/v3/weather?location=%E5%8C%97%E4%BA%AC&output=json&ak=Dj7DgHsHQ3jnHKxjj2gH840kGE2VI0A0";
+
                     @Override
                     public void run() {
                         try {
@@ -129,8 +133,8 @@ public class MeFragment extends Fragment {
                             String str = convertStreamToString(is);
                             Looper.prepare();
                             Toast.makeText(getActivity(), "Http"+str, Toast.LENGTH_SHORT).show();
+                            System.out.println(str);
                             Looper.loop();
-                            System.out.println("HttpUrlConnection方式"+str);
 
 
                         } catch (Exception e) {
@@ -154,6 +158,14 @@ public class MeFragment extends Fragment {
                         new ReptileUtils().getScrollModelList();
                     }
                 }).start();
+            }
+        });
+
+        Button weather= (Button)view.findViewById(R.id.weather);
+        weather.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), MainActivity.class));
             }
         });
         return view;

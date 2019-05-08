@@ -36,11 +36,14 @@ dependencies {
     implementation files('libs/SQLiteStudioRemote.jar')
     implementation 'com.squareup.okhttp3:okhttp:3.8.0'
     compile 'com.google.code.gson:gson:2.8.5'
-//    implementation files('libs/EventBus.jar')
-//    implementation files('libs/galaxy_lite.jar')
-//    implementation files('libs/galaxy_lite_lbs_v2.0.jar')
-//    implementation files('libs/intellij_annotations.jar')
-//    implementation files('libs/javapoet-1.9.0.jar')
-//    implementation files('libs/lbsCoreSDK.jar')
-//    implementation files('libs/protobuf-java-2.3.0-micro.jar')
+    implementation 'org.litepal.android:core:1.4.1'
+    //    implementation files('libs/EventBus.jar')
+    //    implementation files('libs/galaxy_lite.jar')
+    //    implementation files('libs/galaxy_lite_lbs_v2.0.jar')
+    //    implementation files('libs/intellij_annotations.jar')
+    //    implementation files('libs/javapoet-1.9.0.jar')
+    //    implementation files('libs/lbsCoreSDK.jar')
+    //    implementation files('libs/protobuf-java-2.3.0-micro.jar')
+    implementation files('libs/Plugin_SDK_Android_V2.1.jar')
+    implementation files('libs/HeWeather_Public_Android_V2.0.jar')
 }
