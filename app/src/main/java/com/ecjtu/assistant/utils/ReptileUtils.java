@@ -50,7 +50,14 @@ public class ReptileUtils {
             Elements news = doc.select("div[id=wp_news_w6]").select("li");
             for (Element result : news) {
                 RecordDb.Record record = new RecordDb.Record();
-                record.href = rootUrl + result.select("a").attr("href");
+                record.href = rootUrl;
+                String link = result.select("a").attr("href");
+                if (link.startsWith("http")){
+                    record.href = link;
+                }else {
+                    record.href += link;
+                }
+                //record.href = rootUrl + result.select("a").attr("href");
                 record.title = result.select("a").attr("title");
                 record.date = result.select("[class=news_meta]").text();
                 record.imgLink = getListImgLInk(record.href);

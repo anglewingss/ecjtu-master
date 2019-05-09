@@ -233,6 +233,7 @@ public class NewsItemTwoFragment extends BaseFragment implements SwipeRefreshLay
                 handler.sendMessage(msg);
             }
         }).start();
+        swipeRefreshLayout.setRefreshing(false);
 //        int pageNum=3;
 //        boolean b=false;
 //        for (int i = (currentPage-1)*pageNum; i < ((currentPage-1)*pageNum)+pageNum; i++) {
@@ -247,7 +248,6 @@ public class NewsItemTwoFragment extends BaseFragment implements SwipeRefreshLay
 //            Toast.makeText(context, "没有更多数据了~", Toast.LENGTH_SHORT).show();
 //            this.currentPage--;
 //        }
-        swipeRefreshLayout.setRefreshing(false);
     }
     private List<ScrollModel> scrollModelList = new ArrayList<ScrollModel>();
     private void getBanerList(){
@@ -302,7 +302,6 @@ public class NewsItemTwoFragment extends BaseFragment implements SwipeRefreshLay
                     closeProgressDialog();
                 }
             }
-
         }
     };
 
