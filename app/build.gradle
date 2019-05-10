@@ -37,6 +37,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.8.0'
     compile 'com.google.code.gson:gson:2.8.5'
     implementation 'org.litepal.android:core:1.4.1'
+    compile 'com.jcodecraeer:xrecyclerview:1.5.9'
     //    implementation files('libs/EventBus.jar')
     //    implementation files('libs/galaxy_lite.jar')
     //    implementation files('libs/galaxy_lite_lbs_v2.0.jar')

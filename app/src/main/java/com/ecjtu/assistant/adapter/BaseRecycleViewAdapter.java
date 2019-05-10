@@ -193,7 +193,6 @@ abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter<RecyclerVi
         final int pos = getRealPosition(viewHolder);
         final T data = mDatas.get(pos);
         onBind(viewHolder, pos, data);
-
     }
 
     /**
