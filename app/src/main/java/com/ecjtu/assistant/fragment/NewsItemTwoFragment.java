@@ -27,9 +27,11 @@ import com.ecjtu.assistant.db.BannerDb;
 import com.ecjtu.assistant.db.DBManager;
 import com.ecjtu.assistant.db.RecordDb;
 import com.ecjtu.assistant.model.ScrollModel;
+import com.ecjtu.assistant.recyclerview.XRecyclerView;
 import com.ecjtu.assistant.utils.GlideImageLoader;
 import com.ecjtu.assistant.utils.ReptileUtils;
 import com.ecjtu.assistant.utils.ScreenUtils;
+import com.jcodecraeer.xrecyclerview.ProgressStyle;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
@@ -42,14 +44,16 @@ import java.util.Map;
  * Created by LMR on 2018/5/5.
  */
 
-public class NewsItemTwoFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, OnBannerListener {
+public class NewsItemTwoFragment extends BaseFragment implements OnBannerListener {
 
-    private SwipeRefreshLayout swipeRefreshLayout;
+//    private SwipeRefreshLayout swipeRefreshLayout;
     private View contentView;
     private Context context;
-    private RecyclerView newsRecyclerView;
+    private XRecyclerView newsRecyclerView;
     private NewsRecyclerViewAdapter newsRecyclerViewAdapter;
     private Banner banner;
+    private boolean isFirstCreateView = true;
+    private int requestUrlNum = 0;
 
     private int currentPage = 1;
     private List<RecordDb.Record> newsList = new ArrayList<>();
@@ -72,7 +76,7 @@ public class NewsItemTwoFragment extends BaseFragment implements SwipeRefreshLay
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        contentView = inflater.inflate(R.layout.fragment_news_content, container, false);
+        contentView = inflater.inflate(R.layout.xrecyleview, container, false);
         context = getActivity();
         initView();
 
@@ -89,6 +93,9 @@ public class NewsItemTwoFragment extends BaseFragment implements SwipeRefreshLay
 
 //        setDataForView( ) ;
 
+        if (isFirstCreateView){
+            newsRecyclerView.refresh();
+        }
         initData();
         return contentView;
     }
@@ -100,24 +107,54 @@ public class NewsItemTwoFragment extends BaseFragment implements SwipeRefreshLay
         recordDb.open(getActivity());
         bannerDb = BannerDb.getInstance();
         bannerDb.open(getActivity());
-        swipeRefreshLayout = (SwipeRefreshLayout) contentView.findViewById(R.id.swipe_refresh_layout);
+//        swipeRefreshLayout = (SwipeRefreshLayout) contentView.findViewById(R.id.swipe_refresh_layout);
 
-        newsRecyclerView = (RecyclerView) contentView.findViewById(R.id.fragment_news_recyclerView);
+        newsRecyclerView = (XRecyclerView) contentView.findViewById(R.id.recyclerview);
         newsRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         newsRecyclerViewAdapter = new NewsRecyclerViewAdapter(context);
         newsRecyclerView.setAdapter(newsRecyclerViewAdapter);
-        swipeRefreshLayout.setOnRefreshListener(this);
+//        swipeRefreshLayout.setOnRefreshListener(this);
+//
+//        swipeRefreshLayout.setColorSchemeColors(
+//                getResources().getColor(R.color.light_blue_600),
+//                getResources().getColor(R.color.green_300),
+//                getResources().getColor(R.color.orange_600));
+//        swipeRefreshLayout.setOnRefreshListener(this);
+//
+//        //第一次进入页面的时候显示加载进度条
+//        swipeRefreshLayout.setProgressViewOffset(false, 0, (int) TypedValue
+//                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources()
+//                        .getDisplayMetrics()));
 
-        swipeRefreshLayout.setColorSchemeColors(
-                getResources().getColor(R.color.light_blue_600),
-                getResources().getColor(R.color.green_300),
-                getResources().getColor(R.color.orange_600));
-        swipeRefreshLayout.setOnRefreshListener(this);
+        newsRecyclerView.setRefreshProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        newsRecyclerView.setLoadingMoreProgressStyle(ProgressStyle.BallSpinFadeLoader);
+        newsRecyclerView.setArrowImageView(R.drawable.iconfont_downgrey);
+        newsRecyclerView
+                .getDefaultRefreshHeaderView()
+                .setRefreshTimeVisible(true);
 
-        //第一次进入页面的时候显示加载进度条
-        swipeRefreshLayout.setProgressViewOffset(false, 0, (int) TypedValue
-                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources()
-                        .getDisplayMetrics()));
+        newsRecyclerView.setLimitNumberToCallLoadMore(2);
+
+        newsRecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                if (!isFirstCreateView) {
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            if (newsRecyclerView != null)
+                                newsRecyclerView.refreshComplete();
+                        }
+                    }, 1000);
+                }
+            }
+
+            @Override
+            public void onLoadMore() {
+                //Toast.makeText(getActivity(),"jiazai...",Toast.LENGTH_SHORT).show();
+                currentPage++;
+                initData();
+            }
+        });
     }
 
     DBManager dbManager;
@@ -224,7 +261,7 @@ public class NewsItemTwoFragment extends BaseFragment implements SwipeRefreshLay
                 handler.sendMessage(msg);
             }
         }).start();
-        swipeRefreshLayout.setRefreshing(false);
+//        swipeRefreshLayout.setRefreshing(false);
 //        int pageNum=3;
 //        boolean b=false;
 //        for (int i = (currentPage-1)*pageNum; i < ((currentPage-1)*pageNum)+pageNum; i++) {
@@ -270,30 +307,43 @@ public class NewsItemTwoFragment extends BaseFragment implements SwipeRefreshLay
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (msg.what == 1){
-//                for (RecordDb.Record record : newsList) {//这个方法 加载第二页时程序闪退
-//                    newsRecyclerViewAdapter.addData(record);
-//                }
-                //newsRecyclerViewAdapter.addDatas(newsList);
-                for(int i = 0;i<newsList.size();i++){ //这个方法加载第二页时无响应
-                    newsRecyclerViewAdapter.addData(newsList.get(i));
-                }
-            }
-            if (msg.what == 2){
-                convertToBanerList();
-                setDataForView();
+            switch (msg.what) {
+                case 1:
+                    firstRefreshComplete();
+                    for (int i = 0; i < newsList.size(); i++) { //这个方法加载第二页时无响应
+                        newsRecyclerViewAdapter.addData(newsList.get(i));
+                    }
+                    newsRecyclerView.loadMoreComplete();
+                    break;
+                case 2:
+                    convertToBanerList();
+                    firstRefreshComplete();
+                    setDataForView();
+                    break;
+                default:
+                    Toast.makeText(getActivity(), "错误！", Toast.LENGTH_SHORT).show();
+                    break;
+
             }
         }
     };
 
-    @Override
-    public void onRefresh() {
-//        currentPage = 1;
-//        newsRecyclerViewAdapter.removeDatas();
-//        initData();
-        Toast.makeText(context, "已成功刷新新闻列表~", Toast.LENGTH_SHORT).show();
-        swipeRefreshLayout.setRefreshing(false);
+    public void firstRefreshComplete(){
+        requestUrlNum++;
+        if (isFirstCreateView && requestUrlNum == 2) {
+            newsRecyclerView.refreshComplete();
+            isFirstCreateView = false;
+        }
     }
+
+//    @Override
+//    public void onRefresh() {
+////        currentPage = 1;
+////        newsRecyclerViewAdapter.removeDatas();
+////        initData();
+//        Toast.makeText(context, "已成功刷新新闻列表~", Toast.LENGTH_SHORT).show();
+//        swipeRefreshLayout.setRefreshing(false);
+//    }
 
     @Override
     public void OnBannerClick(int position) {

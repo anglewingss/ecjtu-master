@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -77,6 +78,7 @@ public class ReptileUtils {
     public  List<ScrollModel> getScrollModelList(){
         scrollModelList.clear();
         try {
+//            System.err.println(new Date().toString());
             //String url = "http://www.qlu.edu.cn/38/list.htm";
             String url = rootUrl;
             // get请求获取页面信息
@@ -100,6 +102,7 @@ public class ReptileUtils {
                     scrollModel.setUrl(rootUrl + scrollModel.getUrl());
                 }
             }
+//            System.err.println(new Date().toString());
         } catch (Exception e) {
             e.printStackTrace();
         }

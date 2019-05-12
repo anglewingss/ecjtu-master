@@ -195,7 +195,7 @@ public class WeatherFragment extends BaseFragment {
     public void requestWeather(String weatherId)
     {
         final String weatherUrl="https://free-api.heweather.com/s6/weather?location="+weatherId+"&key=5cfa71f0523045cbbc2a915848c89ad4";
-        final String aqiUrl="https://free-api.heweather.com/s6/air/now?location="+weatherId+"&key=5cfa71f0523045cbbc2a915848c89ad4";
+        //final String aqiUrl="https://free-api.heweather.com/s6/air/now?location="+weatherId+"&key=5cfa71f0523045cbbc2a915848c89ad4";
 
         /**
          * 这是对基本天气的访问,但是缺了aqi这一项
@@ -244,57 +244,57 @@ public class WeatherFragment extends BaseFragment {
             }
         });
 
-        HttpUtil.sendOkHttpRequest(aqiUrl, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getActivity(),"获取天气信息失败onFailure", Toast.LENGTH_LONG).show();
-                        swipeRefresh.setRefreshing(false);
-                    }
-                });
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                final String responseText=response.body().string();
-                final AQI aqi=Utility.handleAQIResponse(responseText);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        if((aqi != null) && "ok".equals(aqi.getHeWeather6().get(0).getStatus()))
-                        {
-                            SharedPreferences.Editor editor= PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
-
-                            editor.putString("weather",responseText);
-                            editor.apply();
-                            mWeatherId=aqi.getHeWeather6().get(0).getBasic().getCid();
-                            showAQIInfo(aqi);
-                        }else
-                        {
-                            Toast.makeText(getActivity(), responseText, Toast.LENGTH_SHORT).show();
-
-                        }
-                        swipeRefresh.setRefreshing(false);
-                    }
-
-                });
-            }
-        });
+//        HttpUtil.sendOkHttpRequest(aqiUrl, new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                e.printStackTrace();
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Toast.makeText(getActivity(),"获取天气信息失败onFailure", Toast.LENGTH_LONG).show();
+//                        swipeRefresh.setRefreshing(false);
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                final String responseText=response.body().string();
+//                final AQI aqi=Utility.handleAQIResponse(responseText);
+//                getActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                        if((aqi != null) && "ok".equals(aqi.getHeWeather6().get(0).getStatus()))
+//                        {
+//                            SharedPreferences.Editor editor= PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
+//
+//                            editor.putString("weather",responseText);
+//                            editor.apply();
+//                            mWeatherId=aqi.getHeWeather6().get(0).getBasic().getCid();
+//                            showAQIInfo(aqi);
+//                        }else
+//                        {
+//                            Toast.makeText(getActivity(), responseText, Toast.LENGTH_SHORT).show();
+//
+//                        }
+//                        swipeRefresh.setRefreshing(false);
+//                    }
+//
+//                });
+//            }
+//        });
     }
 
-    private void showAQIInfo(AQI aqi) {
-
-        if(aqi!=null)
-        {
-            aqiText.setText(aqi.getHeWeather6().get(0).getAir_now_city().getAqi());
-            pm25Text.setText(aqi.getHeWeather6().get(0).getAir_now_city().getPm25());
-        }
-
-    }
+//    private void showAQIInfo(AQI aqi) {
+//
+//        if(aqi!=null)
+//        {
+//            aqiText.setText(aqi.getHeWeather6().get(0).getAir_now_city().getAqi());
+//            pm25Text.setText(aqi.getHeWeather6().get(0).getAir_now_city().getPm25());
+//        }
+//
+//    }
 
 
     private void showWeatherInfo(Weather weather) {

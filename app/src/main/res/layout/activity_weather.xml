@@ -35,8 +35,8 @@
             <include layout="@layout/title"/>
             <include layout="@layout/now"/>
             <include layout="@layout/forecast"/>
-            <include layout="@layout/aqi"/>
-            <include layout="@layout/suggestion"/>
+            <!--<include layout="@layout/aqi"/>-->
+            <include layout="@layout/suggestion" />
         </LinearLayout>
     </ScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
