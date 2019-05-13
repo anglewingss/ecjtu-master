@@ -201,6 +201,8 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
             public boolean onMapPoiClick(MapPoi mapPoi) {
                 Toast.makeText(getActivity(),mapPoi.getName(),Toast.LENGTH_LONG).show();
                 query_edit.setText(mapPoi.getName());
+                goalLatlng = mapPoi.getPosition();
+                resultListView.setVisibility(View.GONE);
                 return false;
             }
         });

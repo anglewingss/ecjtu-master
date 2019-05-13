@@ -49,8 +49,8 @@ public class WeatherFragment extends BaseFragment {
     private TextView degreeText;
     private TextView weatherInfoText;
     private LinearLayout forecastLayout;
-    private TextView aqiText;
-    private TextView pm25Text;
+//    private TextView aqiText;
+//    private TextView pm25Text;
     private TextView comfortText;
     private TextView carWashText;
     private TextView sportText;
@@ -101,8 +101,8 @@ public class WeatherFragment extends BaseFragment {
         degreeText=(TextView)view.findViewById(R.id.degree_text);
         weatherInfoText=(TextView)view.findViewById(R.id.weather_info_text);
         forecastLayout=(LinearLayout)view.findViewById(R.id.forecast_layout);
-        aqiText=(TextView)view.findViewById(R.id.aqi_text);
-        pm25Text=(TextView)view.findViewById(R.id.pm25_text);
+//        aqiText=(TextView)view.findViewById(R.id.aqi_text);
+//        pm25Text=(TextView)view.findViewById(R.id.pm25_text);
         comfortText=(TextView)view.findViewById(R.id.comfort_text);
         carWashText=(TextView)view.findViewById(R.id.car_wash_text);
         sportText=(TextView)view.findViewById(R.id.sport_text);
