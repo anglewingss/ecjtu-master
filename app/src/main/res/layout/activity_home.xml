@@ -38,12 +38,12 @@
             android:id="@+id/nav_lib_radio_button"
             style="@style/nav_button"
             android:drawableTop="@drawable/nav_library_radio_button"
-            android:text="图书馆" />
-        <RadioButton
-            android:id="@+id/nav_course_radio_button"
-            style="@style/nav_button"
-            android:drawableTop="@drawable/nav_library_radio_button"
-            android:text="选课" />
+            android:text="天气预报" />
+        <!--<RadioButton-->
+            <!--android:id="@+id/nav_course_radio_button"-->
+            <!--style="@style/nav_button"-->
+            <!--android:drawableTop="@drawable/nav_library_radio_button"-->
+            <!--android:text="选课" />-->
 
         <RadioButton
             android:id="@+id/nav_discovery_radio_button"

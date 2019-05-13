@@ -27,7 +27,7 @@ import static android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN;
 
 public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
-    private RadioButton nav_course_radio_button;
+//    private RadioButton nav_course_radio_button;
     private RadioButton newsRadioButton;
     private RadioButton libRadioButton;
     private RadioButton discoveryRadioButton;
@@ -62,7 +62,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
 
     private void initView() {
 
-        nav_course_radio_button = (RadioButton) findViewById(R.id.nav_course_radio_button);
+//        nav_course_radio_button = (RadioButton) findViewById(R.id.nav_course_radio_button);
         newsRadioButton = (RadioButton) findViewById(R.id.nav_news_radio_button);
         libRadioButton = (RadioButton) findViewById(R.id.nav_lib_radio_button);
         discoveryRadioButton = (RadioButton) findViewById(R.id.nav_discovery_radio_button);
@@ -73,7 +73,7 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
         libRadioButton.setOnClickListener(this);
         discoveryRadioButton.setOnClickListener(this);
         moreRadioButton.setOnClickListener(this);
-        nav_course_radio_button.setOnClickListener(this);
+//        nav_course_radio_button.setOnClickListener(this);
 
         ScreenUtils.setFullscreen(getWindow());
 
@@ -198,9 +198,9 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener {
             case R.id.nav_lib_radio_button:
                 setTabSelection(1);
                 break;
-            case R.id.nav_course_radio_button:
-                setTabSelection(2);
-                break;
+//            case R.id.nav_course_radio_button:
+//                setTabSelection(2);
+//                break;
             case R.id.nav_discovery_radio_button:
                 setTabSelection(3);
                 break;
