@@ -41,7 +41,8 @@
                 android:layout_gravity="top"
                 android:textColor="@color/five"
                 android:textSize="20sp"
-                android:text="名称" />
+                android:text="名称"
+                android:hint="名称"/>
 
             <TextView
                 android:id="@+id/school"
@@ -51,7 +52,8 @@
                 android:layout_gravity="bottom"
                 android:textColor="@color/five"
                 android:textSize="14sp"
-                android:text="学院" />
+                android:text="学院"
+                android:hint="学院"/>
 
         </FrameLayout>
         <View
@@ -73,28 +75,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp" />
 
-    <Button
-        android:id="@+id/connect"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="连接" />
 
-    <Button
-        android:id="@+id/openWebPage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="打开网页" />
-
-    <Button
-        android:id="@+id/reptile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="爬虫" />
-
-    <Button
-        android:id="@+id/weather"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="天气" />
 
 </LinearLayout>

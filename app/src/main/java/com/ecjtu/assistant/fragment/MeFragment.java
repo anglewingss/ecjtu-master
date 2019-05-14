@@ -57,7 +57,6 @@ public class MeFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -94,107 +93,6 @@ public class MeFragment extends Fragment {
         });
         view.findViewById(R.id.head_back).setVisibility(View.GONE);
 
-        Button openWebPage = (Button) view.findViewById(R.id.openWebPage);
-//        openWebPage.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(getActivity(), WebActivity.class));
-//                getActivity().finish();
-//            }
-//        });
-
-        Button connect = (Button) view.findViewById(R.id.connect);
-
-        connect.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Thread(new Runnable() {
-
-                    private HttpURLConnection conn;
-                    //private String strurl = NetWorkUtils.url + "/request/test";
-                    private String strurl = "http://api.map.baidu.com/telematics/v3/weather?location=%E5%8C%97%E4%BA%AC&output=json&ak=Dj7DgHsHQ3jnHKxjj2gH840kGE2VI0A0";
-
-                    @Override
-                    public void run() {
-                        try {
-                            URL url = new URL(strurl);
-                            conn = (HttpURLConnection) url.openConnection();
-                            conn.connect();
-                            conn.setRequestMethod("GET");//设置请求方式为GET
-                            conn.setConnectTimeout(6 * 1000);//设置连接超时的时间
-                            conn.setReadTimeout(8000);//设置读取超时的毫秒数
-                            //conn.setDoInput(true); //允许输入流，即允许下载
-                            //conn.setDoOutput(true); //允许输出流，即允许上传
-
-                            //if (conn.getResponseCode() != 200)//判断是否请求成功
-                                //throw new RuntimeException("运行异常");
-                            //获取服务器返回的输入流
-                            InputStream is = conn.getInputStream();
-                            String str = convertStreamToString(is);
-                            Looper.prepare();
-                            Toast.makeText(getActivity(), "Http"+str, Toast.LENGTH_SHORT).show();
-                            System.out.println(str);
-                            Looper.loop();
-
-
-                        } catch (Exception e) {
-                            System.out.println("utils异常");
-                            e.printStackTrace();
-                        }
-                        //关闭http链接
-                        conn.disconnect();
-                    }
-                }).start();
-            }
-        });
-
-        Button reptile = (Button)view.findViewById(R.id.reptile);
-        reptile.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        new ReptileUtils().getScrollModelList();
-                    }
-                }).start();
-            }
-        });
-
-        Button weather= (Button)view.findViewById(R.id.weather);
-        weather.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), MainActivity.class));
-            }
-        });
         return view;
-    }
-
-    public static String convertStreamToString(InputStream is) {
-        /*
-         * To convert the InputStream to String we use the
-         * BufferedReader.readLine() method. We iterate until the BufferedReader
-         * return null which means there's no more data to read. Each line will
-         * appended to a StringBuilder and returned as String.
-         */
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
-
-        String line = null;
-        try {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return sb.toString();
     }
 }

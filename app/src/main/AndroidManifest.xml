@@ -32,6 +32,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:exported="false"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name="com.ecjtu.weather.MainActivity"></activity>
 
