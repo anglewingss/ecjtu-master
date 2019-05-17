@@ -191,8 +191,9 @@ public class StudentDb {
         return extract(0, cursor);
     }
 
+    String[] columns = {DB_TABLE_COLUMN_name};
     public List<Record> query(String condition) {
-        Cursor cursor = mDB.query(DB_TABLE_NAME, null, condition, null, null, null,
+        Cursor cursor = mDB.query(DB_TABLE_NAME ,null,null, null, null, null,
                 DB_DEFAULT_ORDERBY, null);
         return extract(0, cursor);
     }

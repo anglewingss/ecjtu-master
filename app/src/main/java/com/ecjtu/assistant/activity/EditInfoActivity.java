@@ -29,7 +29,7 @@ import com.ecjtu.assistant.db.StudentDb;
 public class EditInfoActivity extends BaseActivity {
 
     StudentDb recordDb;
-    public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
 
     @Override
     public void onDestroy() {

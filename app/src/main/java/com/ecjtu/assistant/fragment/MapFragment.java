@@ -107,6 +107,7 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
     RouteLine route = null;
     OverlayManager routeOverlay = null;
     private MyLocationConfiguration.LocationMode mCurrentMode;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
 
     boolean useDefaultIcon = false;
     TransitRouteResult nowResultransit = null;
@@ -222,7 +223,7 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
 //        }
         if (!permissionList.isEmpty()) {
             String[] permissions = permissionList.toArray(new String[permissionList.size()]);
-            ActivityCompat.requestPermissions(getActivity(), permissions, 1);
+            ActivityCompat.requestPermissions(getActivity(), permissions, MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
         }
     }
 
@@ -265,8 +266,6 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
                     Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     Toast.makeText(getActivity(), "打开后直接点击返回键即可，若不打开返回下次将再次出现", Toast.LENGTH_LONG).show();
                     startActivityForResult(intent, 0); // 设置完成后返回到原来的界面
-                    mBaidumap.setMyLocationEnabled(true);
-                    mLocClient.start();
                 }
             });
             dialog.setNeutralButton("取消", new android.content.DialogInterface.OnClickListener() {
@@ -281,7 +280,7 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true); // 打开gps;
         option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(30000);
+        option.setScanSpan(30*1000);
         option.setLocationNotify(false);
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
         // 可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
@@ -760,6 +759,18 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
         Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION:
+                isFirstLoc = true;
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions,
+                        grantResults);
+        }
+    }
+
     /**
      * 定位SDK监听函数
      */
@@ -814,9 +825,6 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
 //                    dialog.show();
 //                }
             }
-        }
-
-        public void onReceivePoi(BDLocation poiLocation) {
         }
     }
 //    getView().setFocusableInTouchMode(true);
