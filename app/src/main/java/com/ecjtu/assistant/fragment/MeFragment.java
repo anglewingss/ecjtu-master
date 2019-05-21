@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.ecjtu.assistant.R;
 import com.ecjtu.assistant.activity.EditInfoActivity;
 import com.ecjtu.assistant.activity.LoginActivity;
+import com.ecjtu.assistant.activity.ReviceActivity;
 import com.ecjtu.assistant.activity.WebActivity;
 import com.ecjtu.assistant.app.MyApplication;
 import com.ecjtu.assistant.app.OtherApplication;
@@ -91,6 +92,13 @@ public class MeFragment extends Fragment {
             }
         });
         view.findViewById(R.id.head_back).setVisibility(View.GONE);
+
+        view.findViewById(R.id.RevicePw).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), ReviceActivity.class));
+            }
+        });
 
         return view;
     }
