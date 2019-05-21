@@ -121,7 +121,6 @@ public class EditInfoActivity extends BaseActivity {
         student.headerUrl = uriStr;
         boolean insert = recordDb.update(student, " _id=? ",
                 new String[]{student.key+""});
-
         if (insert) {
             MyApplication.getInstance().student=student;
             showToast("保存成功!");

@@ -48,7 +48,6 @@ public class MeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         student = MyApplication.getInstance().student;
-
         name.setText(student.name);
         school.setText(student.school);
         try {

@@ -62,7 +62,6 @@ public class LifeInfoActivity extends BaseActivity {
                     targeted.setType("text/plain");
                     ActivityInfo activityInfo = info.activityInfo;
                     Log.v("logcat", "packageName=" + activityInfo.packageName + "Name=" + activityInfo.name); // 分享出去的内容
-
                     targeted.putExtra(Intent.EXTRA_TEXT, content); // 分享出去的标题
                     targeted.putExtra(Intent.EXTRA_SUBJECT, "主题");
                     targeted.setPackage(activityInfo.packageName);

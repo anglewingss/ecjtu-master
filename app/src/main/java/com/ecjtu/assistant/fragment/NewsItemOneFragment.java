@@ -249,7 +249,6 @@ public class NewsItemOneFragment extends BaseFragment implements OnBannerListene
             public void run() {
                 //清空newslist
                 newsList.clear();
-
                 newsList = new ReptileUtils().getNewsList(urlSuffix);
                 Message msg = new Message();
                 msg.what = 1;

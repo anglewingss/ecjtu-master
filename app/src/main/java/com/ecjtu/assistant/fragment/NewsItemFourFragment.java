@@ -161,7 +161,6 @@ public class NewsItemFourFragment extends BaseFragment implements SwipeRefreshLa
     private String urlSuffix = "";
     private void initData() {
         urlSuffix = "5174/list.htm";
-
         new Thread(new Runnable() {
             @Override
             public void run() {

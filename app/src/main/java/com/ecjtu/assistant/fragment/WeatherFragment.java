@@ -221,24 +221,17 @@ public class WeatherFragment extends BaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if((weather != null) && "ok".equals(weather.getHeWeather6().get(0).getStatusX()))
-                        {
+                        if((weather != null) && "ok".equals(weather.getHeWeather6().get(0).getStatusX())) {
                             SharedPreferences.Editor editor= PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
-
                             editor.putString("weather",responseText);
                             editor.apply();
                             mWeatherId=weather.getHeWeather6().get(0).getBasicX().getCid();
                             showWeatherInfo(weather);
-
-                        }else
-                        {
+                        }else {
                             Toast.makeText(getActivity(), responseText, Toast.LENGTH_SHORT).show();
-
                         }
                         swipeRefresh.setRefreshing(false);
                     }
-
-
                 });
 
             }
