@@ -68,25 +68,19 @@ public class RegisterActivity extends BaseActivity {
             return;
         }
         System.out.println("你好你好: "+recordDb.query(tel.getText().toString()));
-        if(recordDb.query(tel.getText().toString()).size()==0){
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    StudentDb.Record note = new StudentDb.Record();
-                    note.tel = tel.getText().toString();
-                    note.pw = pw.getText().toString();
-                    boolean insert = recordDb.insert(note);
+        new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        StudentDb.Record note = new StudentDb.Record();
+                        note.tel = tel.getText().toString();
+                        note.pw = pw.getText().toString();
+                        boolean insert = recordDb.insert(note);
 
-                    showToast("注册成功!");
-                    finish();
+                        showToast("注册成功!");
+                        finish();
 
-                }
-            }, 100);
-        }else{
-            showToast("你已经注册过了");
-            return;
-        }
-
+            }
+        }, 100);
     }
 
 }

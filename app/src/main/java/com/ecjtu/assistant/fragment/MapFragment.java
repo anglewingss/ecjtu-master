@@ -280,7 +280,7 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
         LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true); // 打开gps;
         option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(30*1000);
+        option.setScanSpan(3*1000);
         option.setLocationNotify(false);
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
         // 可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
@@ -338,13 +338,8 @@ public class MapFragment extends BaseFragment implements BaiduMap.OnMapClickList
             public void onClick(View v) {
                 route = null;
                 mBaidumap.clear();
-                // 设置起终点信息，对于tranist search 来说，城市名无意义
-//                PlanNode stNode = PlanNode.withCityNameAndPlaceName(localcity, start_edit.getText().toString());
-//                PlanNode enNode = PlanNode.withCityNameAndPlaceName(localcity, end_edit.getText().toString());
                 PlanNode stNode = PlanNode.withLocation(myLatlng);
                 PlanNode enNode = PlanNode.withLocation(goalLatlng);
-//                mSearch.transitSearch((new TransitRoutePlanOption())
-//                        .from(stNode).city(localcity).to(enNode));
                 mSearch.walkingSearch((new WalkingRoutePlanOption())
                         .from(stNode)
                         .to(enNode));
